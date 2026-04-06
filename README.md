@@ -1,4 +1,4 @@
-# sdim <a href="https://github.com/GabboCg/sdim"><img src="man/figures/logo.png" align="right" height="152" /></a>
+# sdim <a href="https://github.com/GabboCg/sdim"><img src="man/figures/logo.png" align="right" height="138" /></a>
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/GabboCg/sdim/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/GabboCg/sdim/actions/workflows/R-CMD-check.yaml)
@@ -124,7 +124,7 @@ for (j in seq_along(nfact)) {
   
   if (k <= 6) {
     
-    # Factos
+    # Factors
     total_r2["FF", j] <- eval_factors(he2023_ff48, f5[, 1:k])["TotalR2"]
     
   }
