@@ -1,4 +1,4 @@
-# sdim <a href="https://github.com/GabboCg/sdim"><img src="man/figures/logo.png" align="right" height="148" /></a>
+# sdim <a href="https://github.com/GabboCg/sdim"><img src="man/figures/logo.png" align="right" height="152" /></a>
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/GabboCg/sdim/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/GabboCg/sdim/actions/workflows/R-CMD-check.yaml)
