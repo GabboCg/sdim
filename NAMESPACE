@@ -13,6 +13,11 @@ S3method(summary,       sdim_fit)
 S3method(print,         summary.sdim_fit)
 S3method(plot,          sdim_fit)
 S3method(print,         sdim_list)
+S3method(print,         sdim_spca)
+S3method(summary,       sdim_spca)
+S3method(print,         summary.sdim_spca)
+S3method(print,         sdim_eval)
+S3method("[",           sdim_eval)
 
 # Imports
 importFrom(stats, sd, quantile)

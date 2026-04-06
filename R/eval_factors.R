@@ -74,6 +74,34 @@ eval_factors <- function(ret, factors) {
   sr       <- mean(abs(res[, 3L] / res[, 4L]))
   a2r      <- mean(abs(res[, 3L] / res[, 5L]))
 
-  c(RMSPE = rmspe, TotalR2 = total_r2, SR = sr, A2R = a2r)
+  result <- c(RMSPE = rmspe, TotalR2 = total_r2, SR = sr, A2R = a2r)
+  structure(result, class = "sdim_eval", n_port = N, n_fac = K)
 
+}
+
+#' @export
+print.sdim_eval <- function(x, ...) {
+
+  rule <- strrep("-", 40)
+  lbl  <- function(s, w = 16) paste0(s, strrep(" ", w - nchar(s, type = "chars")))
+
+  cat("Factor Evaluation\n")
+  cat(rule, "\n")
+  cat(sprintf(" %s %d\n", lbl("Portfolios"), attr(x, "n_port")))
+  cat(sprintf(" %s %d\n", lbl("Factors"),    attr(x, "n_fac")))
+
+  cat("\nPerformance (He et al., 2023, \u00a72.4)\n")
+  cat(rule, "\n")
+  cat(sprintf(" %s %8.4f  (%%)\n", lbl("RMSPE"),             unclass(x)[["RMSPE"]]))
+  cat(sprintf(" %s %8.4f  (%%)\n", lbl("Total adj-R\u00b2"), unclass(x)[["TotalR2"]]))
+  cat(sprintf(" %s %8.4f\n",       lbl("SR"),                 unclass(x)[["SR"]]))
+  cat(sprintf(" %s %8.4f\n",       lbl("A2R"),                unclass(x)[["A2R"]]))
+
+  invisible(x)
+
+}
+
+#' @export
+`[.sdim_eval` <- function(x, i) {
+  unclass(x)[i]
 }

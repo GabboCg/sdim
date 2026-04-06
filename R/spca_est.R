@@ -116,6 +116,7 @@ spca_est <- function(target, X, nfac, winsorize = FALSE, winsor_probs = c(0, 99)
 
 ## S3 methods -----------------------------------------------------------------
 
+#' @export
 print.sdim_spca <- function(x, ...) {
 
   cat("<sdim_spca>\n")
@@ -127,15 +128,21 @@ print.sdim_spca <- function(x, ...) {
 
 }
 
+#' @export
 summary.sdim_spca <- function(object, ...) {
 
+  K       <- ncol(object$factors)
+  eigvals <- object$eigvals[seq_len(K)]
+  ve      <- 100 * eigvals / sum(object$eigvals)
+
   out <- list(
-    call = object$call,
-    n_obs = nrow(object$Xs),
-    n_pred = ncol(object$Xs),
-    n_fac = ncol(object$factors),
+    call         = object$call,
+    n_obs        = nrow(object$Xs),
+    n_pred       = ncol(object$Xs),
+    n_fac        = K,
     beta_summary = stats::quantile(object$beta, probs = c(0, 0.25, 0.5, 0.75, 1)),
-    eigvals = object$eigvals[seq_len(ncol(object$factors))]
+    eigvals      = eigvals,
+    ve           = ve
   )
 
   class(out) <- "summary.sdim_spca"
@@ -143,18 +150,33 @@ summary.sdim_spca <- function(object, ...) {
 
 }
 
+#' @export
 print.summary.sdim_spca <- function(x, ...) {
 
-  cat("Call:\n")
-  print(x$call)
-  cat("\nModel size:\n")
-  cat(" Observations :", x$n_obs, "\n")
-  cat(" Predictors   :", x$n_pred, "\n")
-  cat(" Factors      :", x$n_fac, "\n")
-  cat("\nSlope summary:\n")
-  print(x$beta_summary)
-  cat("\nLeading singular values:\n")
-  print(x$eigvals)
+  rule <- strrep("-", 40)
+
+  cat("Scaled PCA (sPCA)\n")
+  cat(rule, "\n")
+  cat("Call: "); print(x$call)
+
+  cat("\nDimensions\n")
+  cat(rule, "\n")
+  cat(sprintf(" %-16s %d\n", "Observations",  x$n_obs))
+  cat(sprintf(" %-16s %d\n", "Predictors",    x$n_pred))
+  cat(sprintf(" %-16s %d\n", "Factors",       x$n_fac))
+
+  cat("\nEigenvalues\n")
+  cat(rule, "\n")
+  fnames <- paste0("F", seq_len(x$n_fac))
+  ev_tbl <- rbind(Eigenvalue = round(x$eigvals, 4),
+                  `Var. expl. (%)` = round(x$ve, 2))
+  colnames(ev_tbl) <- fnames
+  print(ev_tbl, quote = FALSE)
+
+  cat("\nOLS slope summary (beta)\n")
+  cat(rule, "\n")
+  print(round(x$beta_summary, 6))
+
   invisible(x)
 
 }

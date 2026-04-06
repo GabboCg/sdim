@@ -12,17 +12,21 @@ print.sdim_fit <- function(x, ...) {
 #' @export
 summary.sdim_fit <- function(object, ...) {
 
+  eigvals <- object$eigvals
+  ve      <- 100 * eigvals / sum(eigvals)
+
   out <- list(
     call    = object$call,
     method  = object$method,
     n_obs   = nrow(object$factors),
     n_pred  = nrow(object$lambda),
     n_fac   = ncol(object$factors),
-    eigvals = object$eigvals
+    eigvals = eigvals,
+    ve      = ve
   )
 
-  if (!is.null(object$beta))
-    out$beta_summary <- stats::quantile(object$beta, probs = c(0, .25, .5, .75, 1))
+  if (!is.null(object$gamma))
+    out$gamma <- object$gamma
   if (!is.null(object$gmm_stat))
     out$gmm_stat <- object$gmm_stat
 
@@ -34,22 +38,43 @@ summary.sdim_fit <- function(object, ...) {
 #' @export
 print.summary.sdim_fit <- function(x, ...) {
 
-  if (!is.null(x$call)) { cat("Call:\n"); print(x$call) }
-  cat("\nModel size:\n")
-  cat(" Observations :", x$n_obs,  "\n")
-  cat(" Predictors   :", x$n_pred, "\n")
-  cat(" Factors      :", x$n_fac,  "\n")
-  cat("\nLeading eigenvalues:\n"); print(x$eigvals)
+  rule <- strrep("-", 40)
 
-  if (!is.null(x$beta_summary)) {
+  method_label <- switch(x$method,
+    pca = "Principal Component Analysis (PCA)",
+    pls = "Partial Least Squares (PLS)",
+    rra = "Reduced-Rank Approach (RRA)",
+    toupper(x$method)
+  )
 
-    cat("\nSlope summary (sPCA):\n"); print(x$beta_summary)
+  cat(method_label, "\n")
+  cat(rule, "\n")
+  if (!is.null(x$call)) { cat("Call: "); print(x$call) }
 
-  }
+  cat("\nDimensions\n")
+  cat(rule, "\n")
+  cat(sprintf(" %-16s %d\n", "Observations", x$n_obs))
+  cat(sprintf(" %-16s %d\n", "Predictors",   x$n_pred))
+  cat(sprintf(" %-16s %d\n", "Factors",       x$n_fac))
+
+  if (!is.null(x$gamma))
+    cat(sprintf(" %-16s %g\n", "gamma (PCA)",  x$gamma))
+
+  cat("\nEigenvalues\n")
+  cat(rule, "\n")
+  fnames <- paste0("F", seq_len(x$n_fac))
+  ev_tbl <- rbind(Eigenvalue     = round(x$eigvals, 4),
+                  `Var. expl. (%)` = round(x$ve, 2))
+  colnames(ev_tbl) <- fnames
+  print(ev_tbl, quote = FALSE)
 
   if (!is.null(x$gmm_stat)) {
 
-    cat(sprintf("\nGMM statistic (RRA): %.4f  p-value: %.4f\n", x$gmm_stat$stat, x$gmm_stat$pvalue))
+    cat("\nGMM overidentification test\n")
+    cat(rule, "\n")
+    cat(sprintf(" %-16s %.4f\n", "J statistic", x$gmm_stat$stat))
+    cat(sprintf(" %-16s %d\n",   "df",           x$gmm_stat$df))
+    cat(sprintf(" %-16s %.4f\n", "p-value",      x$gmm_stat$pvalue))
 
   }
 
