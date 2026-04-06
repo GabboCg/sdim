@@ -70,7 +70,7 @@ summary(fit_spca)
 library(sdim)
 
 # Align dates: he2023_factors ends 12 months earlier than portfolio datasets
-he2023_ff48 <- he2023_ff48vw[1:516, -1] / 100 - he2023_ff5$RF[127:642] / 100      # excess returns
+he2023_ff48 <- he2023_ff48vw[1:516, -1] / 100 - he2023_ff5$RF[127:642] / 100 # excess returns
 G <- he2023_factors[1:516, -1] / 100             # factor proxies
 
 f5 <- G[, 1:6]   # first 6 columns are Fama-French 5 + momentum
@@ -106,6 +106,6 @@ If you encounter a bug, please file an issue with a minimal reproducible example
 
 ## References
 
-- He, J., Huang, J., Li, F., and Zhou, G. (2023). "Shrinking Factor Dimension: A Reduced-Rank Approach." *Management Science*, 69(9). [doi:10.1287/mnsc.2022.4428](https://doi.org/10.1287/mnsc.2022.4428)
+- He, J., Huang, J., Li, F., and Zhou, G. (2023). "Shrinking Factor Dimension: A Reduced-Rank Approach." *Management Science*, 69(9). [doi:10.1287/mnsc.2022.4563](https://doi.org/10.1287/mnsc.2022.4563)
 
 - Huang, J., Jiang, J., Li, F., Tong, G., and Zhou, G. (2022). "Scaled PCA: A New Approach to Dimension Reduction." *Management Science*, 68(3). [doi:10.1287/mnsc.2021.4020](https://doi.org/10.1287/mnsc.2021.4020)
