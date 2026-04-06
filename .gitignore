@@ -1,0 +1,18 @@
+# R
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rcheck/
+*.tar.gz
+
+# Package build
+/doc/
+/Meta/
+
+# Claude Code
+CLAUDE.md
+
+# Package directories excluded from version control
+/docs/
+/data-raw/
