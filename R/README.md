@@ -1,22 +1,25 @@
-# sdim
+# sdim <a href="https://github.com/GabboCg/sdim"><img src="man/figures/logo.png" align="right" height="138" /></a>
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/GabboCg/sdim/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/GabboCg/sdim/actions/workflows/R-CMD-check.yaml)
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 <!-- badges: end -->
 
 ## Overview
 
-**sdim** implements four factor extraction methods for asset pricing and macroeconomic forecasting, based on two *Management Science* papers:
+**sdim** implements four factor extraction methods for asset pricing and macroeconomic forecasting, based on He et al. (2023, MS) and Huang et al. (2022, MS):
 
 | Function | Method | Reference |
 |---|---|---|
-| `pca_est()` | Principal Component Analysis (PCA) | He et al. (2023) |
-| `pls_est()` | Partial Least Squares (PLS) | He et al. (2023) |
-| `rra_est()` | Reduced-Rank Approach (RRA) | He et al. (2023) |
-| `spca_est()` | Scaled PCA (sPCA) | Huang et al. (2022) |
+| `pca_est()` | Principal Component Analysis (PCA) | He et al. (2023, MS) |
+| `pls_est()` | Partial Least Squares (PLS) | He et al. (2023, MS) |
+| `rra_est()` | Reduced-Rank Approach (RRA) | He et al. (2023, MS) |
+| `spca_est()` | Scaled PCA (sPCA) | Huang et al. (2022, MS) |
 
 PCA, PLS, and RRA take a multivariate target (T×N returns matrix) and a matrix of factor proxies. sPCA takes a univariate target and scales each proxy by its OLS slope on the target before extracting principal components. Performance of extracted factors can be evaluated with `eval_factors()`.
 
-The package ships with seven `he2023_*` datasets (factor proxies and portfolio returns) from the He et al. (2023) replication package.
+The package ships with seven `he2023_*` datasets (factor proxies and portfolio returns) from the He et al. (2023, MS) replication package.
 
 ## Installation
 
@@ -101,3 +104,9 @@ round(total_r2, 2)
 ## Getting help
 
 If you encounter a bug, please file an issue with a minimal reproducible example on [GitHub](https://github.com/GabboCg/sdim/issues). For questions, email gabriel.cabreraguzman@postgrad.manchester.ac.uk.
+
+## References
+
+- He, J., Huang, J., Li, F., and Zhou, G. (2023). "Shrinking Factor Dimension: A Reduced-Rank Approach." *Management Science*, 69(9). [doi:10.1287/mnsc.2022.4428](https://doi.org/10.1287/mnsc.2022.4428)
+
+- Huang, J., Jiang, J., Li, F., Tong, G., and Zhou, G. (2022). "Scaled PCA: A New Approach to Dimension Reduction." *Management Science*, 68(3). [doi:10.1287/mnsc.2021.4020](https://doi.org/10.1287/mnsc.2021.4020)
