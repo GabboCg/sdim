@@ -23,7 +23,7 @@ The package ships with seven `he2023_*` datasets (factor proxies and portfolio r
 
 ## Installation
 
-```r
+``` r
 # Install from GitHub (not yet on CRAN)
 # install.packages("pak")
 pak::pak("GabboCg/sdim")
@@ -33,7 +33,7 @@ pak::pak("GabboCg/sdim")
 
 ### Quick start
 
-```r
+``` r
 library(sdim)
 
 set.seed(42)
@@ -68,7 +68,7 @@ eval_factors(ret = ret, factors = fit_rra$factors)
 
 ### sPCA (univariate target)
 
-```r
+``` r
 y <- rnorm(200)   # univariate return series
 
 fit_spca <- spca_est(target = y, X = X, nfac = 3)
@@ -97,7 +97,7 @@ summary(fit_spca)
 
 ### Replicating He et al. (2023) — Table 3
 
-```r
+``` r
 library(sdim)
 
 # Align dates: he2023_factors ends 12 months earlier than portfolio datasets
