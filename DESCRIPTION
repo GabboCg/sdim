@@ -1,15 +1,15 @@
 Package: sdim
 Type: Package
-Title: Factor Extraction via Scaled PCA and Reduced-Rank Approaches
+Title: An R Package for Supervised Dimension Reduction
 Version: 0.1.0
 Authors@R: c(
-    person("YOUR", "NAME", email = "your@email.com", role = c("aut", "cre"))
+    person("Gabriel Cabrera", email = "your@email.com", role = c("aut", "cre"))
   )
 Description: Implements four factor extraction methods for asset pricing and
     macroeconomic forecasting: principal component analysis (PCA), partial
     least squares (PLS), scaled PCA (sPCA) of Huang, Jiang, Li, Tong, and
     Zhou (2022) <doi:10.1287/mnsc.2021.4020>, and the reduced-rank approach
-    (RRA) of He, Huang, Li, and Zhou (2023) <doi:10.1287/mnsc.2022.4428>.
+    (RRA) of He, Huang, Li, and Zhou (2023) <doi:10.1287/mnsc.2022.4563>.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
