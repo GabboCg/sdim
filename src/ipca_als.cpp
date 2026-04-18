@@ -76,7 +76,8 @@ List ipca_als_cpp(List ret_list, List Z_list,
     bool ok_load = arma::solve(g_vec, LHS, rhs_vec);
     if (!ok_load) {
       LHS.diag() += 1e-8;
-      g_vec = arma::solve(LHS, rhs_vec);
+      bool ok_load2 = arma::solve(g_vec, LHS, rhs_vec);
+      if (!ok_load2) g_vec.zeros();
     }
     Gamma = arma::reshape(g_vec, L, K);             // fills columns
 
