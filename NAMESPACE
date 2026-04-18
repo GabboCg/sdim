@@ -5,6 +5,7 @@ export(pca_est)
 export(pls_est)
 export(spca_est)
 export(rra_est)
+export(ipca_est)
 export(eval_factors)
 
 # S3 methods — registered for dispatch, not exported as named functions
