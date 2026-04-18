@@ -14,7 +14,8 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Depends: R (>= 4.1.0)
-Imports: stats, graphics
+Imports: stats, graphics, Rcpp
+LinkingTo: Rcpp, RcppArmadillo
 Suggests: frenchdata, knitr, readxl, rmarkdown, testthat (>= 3.0.0)
 VignetteBuilder: knitr
 RoxygenNote: 7.3.2

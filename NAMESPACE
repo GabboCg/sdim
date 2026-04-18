@@ -19,6 +19,11 @@ S3method(print,         summary.sdim_spca)
 S3method(print,         sdim_eval)
 S3method("[",           sdim_eval)
 
+# Rcpp dynamic library
+useDynLib(sdim, .registration = TRUE)
+importFrom(Rcpp, sourceRcpp)
+export(ipca_est)
+
 # Imports
 importFrom(stats, sd, quantile)
 importFrom(graphics, par, plot, title)
