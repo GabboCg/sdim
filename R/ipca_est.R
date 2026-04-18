@@ -62,7 +62,7 @@ ipca_est <- function(ret, Z, nfac, max_iter = 100, tol = 1e-6) {
     stop("`nfac` cannot exceed the number of assets N.", call. = FALSE)
 
   if (!is.numeric(max_iter) || length(max_iter) != 1L ||
-      is.na(max_iter) || max_iter < 1L)
+        is.na(max_iter) || max_iter < 1L)
     stop("`max_iter` must be a positive integer.", call. = FALSE)
   max_iter <- as.integer(max_iter)
 
@@ -84,10 +84,13 @@ ipca_est <- function(ret, Z, nfac, max_iter = 100, tol = 1e-6) {
   z_list   <- vector("list", t_obs)
   for (t in seq_len(t_obs)) {
     obs <- which(!is.na(ret[t, ]))
-    if (length(obs) < nfac)
-      stop(sprintf(
+    if (length(obs) < nfac) {
+      msg <- sprintf(
         "Time period %d has %d observed assets, fewer than nfac = %d.",
-        t, length(obs), nfac), call. = FALSE)
+        t, length(obs), nfac
+      )
+      stop(msg, call. = FALSE)
+    }
     ret_list[[t]] <- ret[t, obs]
     z_list[[t]]   <- matrix(Z[t, obs, ], nrow = length(obs), ncol = n_char)
   }
