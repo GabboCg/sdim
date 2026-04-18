@@ -1,6 +1,14 @@
 #' @export
 print.sdim_fit <- function(x, ...) {
 
+  if (x$method == "ipca") {
+    cat(sprintf("<sdim_fit [%s]>\n", x$method))
+    cat(" Observations    :", nrow(x$factors), "\n")
+    cat(" Characteristics :", nrow(x$lambda),  "\n")
+    cat(" Factors         :", ncol(x$factors), "\n")
+    return(invisible(x))
+  }
+
   cat(sprintf("<sdim_fit [%s]>\n", x$method))
   cat(" Observations :", nrow(x$factors), "\n")
   cat(" Predictors   :", nrow(x$lambda),  "\n")
@@ -41,9 +49,10 @@ print.summary.sdim_fit <- function(x, ...) {
   rule <- strrep("-", 40)
 
   method_label <- switch(x$method,
-    pca = "Principal Component Analysis (PCA)",
-    pls = "Partial Least Squares (PLS)",
-    rra = "Reduced-Rank Approach (RRA)",
+    pca  = "Principal Component Analysis (PCA)",
+    pls  = "Partial Least Squares (PLS)",
+    rra  = "Reduced-Rank Approach (RRA)",
+    ipca = "Instrumented Principal Components Analysis (IPCA)",
     toupper(x$method)
   )
 
@@ -54,7 +63,8 @@ print.summary.sdim_fit <- function(x, ...) {
   cat("\nDimensions\n")
   cat(rule, "\n")
   cat(sprintf(" %-16s %d\n", "Observations", x$n_obs))
-  cat(sprintf(" %-16s %d\n", "Predictors",   x$n_pred))
+  pred_label <- if (x$method == "ipca") "Characteristics" else "Predictors"
+  cat(sprintf(" %-16s %d\n", pred_label, x$n_pred))
   cat(sprintf(" %-16s %d\n", "Factors",       x$n_fac))
 
   if (!is.null(x$gamma))
