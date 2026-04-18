@@ -21,8 +21,7 @@ S3method("[",           sdim_eval)
 
 # Rcpp dynamic library
 useDynLib(sdim, .registration = TRUE)
-importFrom(Rcpp, sourceRcpp)
-export(ipca_est)
+importFrom(Rcpp, evalCpp)
 
 # Imports
 importFrom(stats, sd, quantile)

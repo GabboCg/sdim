@@ -19,3 +19,8 @@ CLAUDE.md
 # Package directories excluded from version control
 /docs/
 /data-raw/
+
+# Compiled C++ objects and shared libraries
+src/*.o
+src/*.so
+src/*.dll
