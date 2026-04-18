@@ -127,7 +127,7 @@ test_that("ipca_est works with nfac = 1", {
   set.seed(7)
   ret <- matrix(rnorm(50 * 10) / 100, 50, 10)
   Z   <- array(rnorm(50 * 10 * 4), dim = c(50, 10, 4))
-  fit <- ipca_est(ret, Z, nfac = 1)
+  fit <- suppressWarnings(ipca_est(ret, Z, nfac = 1))
   expect_equal(dim(fit$factors), c(50L, 1L))
   expect_equal(dim(fit$lambda),  c(4L,  1L))
 })
@@ -137,7 +137,7 @@ test_that("ipca_est works with nfac = L (square Gamma)", {
   L   <- 4
   ret <- matrix(rnorm(50 * 10) / 100, 50, 10)
   Z   <- array(rnorm(50 * 10 * L), dim = c(50, 10, L))
-  fit <- ipca_est(ret, Z, nfac = L)
+  fit <- suppressWarnings(ipca_est(ret, Z, nfac = L))
   expect_equal(dim(fit$lambda), c(L, L))
 })
 
