@@ -24,11 +24,13 @@ List ipca_als_cpp(List ret_list, List Z_list,
   }
   arma::mat U; arma::vec s_init; arma::mat V_init;
   arma::svd_econ(U, s_init, V_init, M);
+  if (K > (int)U.n_cols) {
+    Rcpp::stop("ipca_als_cpp: K (%d) exceeds min(L, T) = %d. Reduce nfac.", K, (int)U.n_cols);
+  }
   arma::mat Gamma = U.cols(0, K - 1);   // L x K
 
   arma::mat F_mat(T, K, arma::fill::zeros);
   arma::mat Gamma_old = Gamma;
-  arma::vec sv(K);
   bool converged = false;
 
   for (int iter = 0; iter < max_iter; iter++) {
@@ -47,7 +49,8 @@ List ipca_als_cpp(List ret_list, List Z_list,
       if (!ok) {
         // Ridge fallback for near-singular A
         A.diag() += 1e-8;
-        ft = arma::solve(A, b);
+        bool ok2 = arma::solve(ft, A, b);
+        if (!ok2) ft.zeros();
       }
       F_mat.row(t) = ft.t();
     }
@@ -69,15 +72,21 @@ List ipca_als_cpp(List ret_list, List Z_list,
       RHS_mat += Zt.t() * rt * ft.t();
     }
     arma::vec rhs_vec = arma::vectorise(RHS_mat);   // stacks columns
-    arma::vec g_vec   = arma::solve(LHS, rhs_vec);
+    arma::vec g_vec;
+    bool ok_load = arma::solve(g_vec, LHS, rhs_vec);
+    if (!ok_load) {
+      LHS.diag() += 1e-8;
+      g_vec = arma::solve(LHS, rhs_vec);
+    }
     Gamma = arma::reshape(g_vec, L, K);             // fills columns
 
     // --- Normalize: thin SVD of Gamma ---
     arma::mat Usvd, Vsvd;
-    arma::svd_econ(Usvd, sv, Vsvd, Gamma);
+    arma::vec sv_norm;
+    arma::svd_econ(Usvd, sv_norm, Vsvd, Gamma);
     Gamma = Usvd.cols(0, K - 1);                    // L x K, Gamma'Gamma = I_K
     // Rotate F to preserve fitted values: F_new = F * V * diag(sv)
-    F_mat = F_mat * Vsvd * arma::diagmat(sv);
+    F_mat = F_mat * Vsvd * arma::diagmat(sv_norm);
 
     // Sign convention: flip so largest-abs element of each Gamma column is positive
     for (int k = 0; k < K; k++) {
@@ -97,6 +106,12 @@ List ipca_als_cpp(List ret_list, List Z_list,
 
   if (!converged) {
     Rcpp::warning("ipca_est: ALS did not converge in %d iterations", max_iter);
+  }
+
+  // Compute sv as variance (mean squared) of each factor column — informative eigval analog
+  arma::vec sv(K);
+  for (int k = 0; k < K; k++) {
+    sv(k) = arma::mean(arma::square(F_mat.col(k)));
   }
 
   return List::create(Named("Gamma") = Gamma,
