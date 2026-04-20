@@ -21,8 +21,10 @@ must mirror \code{ret} exactly.}
 (default 1e-6).}
 
 \item{factor_mean}{Character scalar specifying how the factor mean is
-modelled. One of \code{"zero"} (default), \code{"constant"}, or
-\code{"VAR"}.}
+modelled. One of \code{"zero"} (default, no mean adjustment),
+\code{"constant"} (time-series average), \code{"VAR1"} (VAR(1) with
+intercept), \code{"macro"} (regression on macro predictors), or
+\code{"forecombo"} (OLS combination of VAR1 + macro).}
 }
 \value{
 An object of class \code{"sdim_fit"} with fields:
@@ -31,7 +33,7 @@ An object of class \code{"sdim_fit"} with fields:
   \code{factor_mean} (character scalar), \code{call},
   \code{method = "ipca"}, \code{nfac}.
   If \code{factor_mean = "constant"}: also \code{mu} (length-K mean vector).
-  If \code{factor_mean = "VAR"}: also \code{var_coef} (K x K),
+  If \code{factor_mean = "VAR1"}: also \code{var_coef} (K x K),
   \code{var_intercept} (length-K), \code{var_resid} ((T-1) x K).
 }
 \description{

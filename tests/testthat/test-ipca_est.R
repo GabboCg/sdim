@@ -206,27 +206,41 @@ test_that("factor_mean = 'constant' stores mu = colMeans(factors)", {
   expect_null(fit$var_resid)
 })
 
-test_that("factor_mean = 'VAR' stores var_coef, var_intercept, var_resid", {
+test_that("factor_mean = 'VAR1' stores var_coef, var_intercept, var_resid", {
   set.seed(12)
   T <- 60; N <- 15; L <- 4; K <- 2
   ret <- matrix(rnorm(T * N) / 100, T, N)
   Z   <- array(rnorm(T * N * L), dim = c(T, N, L))
-  fit <- ipca_est(ret, Z, nfac = K, factor_mean = "VAR")
-  expect_equal(fit$factor_mean, "VAR")
+  fit <- ipca_est(ret, Z, nfac = K, factor_mean = "VAR1")
+  expect_equal(fit$factor_mean, "VAR1")
   expect_equal(dim(fit$var_coef),  c(K, K))
   expect_length(fit$var_intercept, K)
   expect_equal(dim(fit$var_resid), c(T - 1L, K))
   expect_null(fit$mu)
 })
 
-test_that("factor_mean = 'VAR' errors when T <= nfac + 1", {
+test_that("factor_mean = 'VAR1' errors when T <= nfac + 1", {
   set.seed(13)
   K <- 2; T <- K + 1L
   ret <- matrix(rnorm(T * 10) / 100, T, 10)
   Z   <- array(rnorm(T * 10 * 4), dim = c(T, 10, 4))
   expect_error(
-    ipca_est(ret, Z, nfac = K, factor_mean = "VAR"),
+    ipca_est(ret, Z, nfac = K, factor_mean = "VAR1"),
     regexp = "T > nfac \\+ 1"
+  )
+})
+
+test_that("factor_mean = 'macro' and 'forecombo' are not yet implemented", {
+  set.seed(16)
+  ret <- matrix(rnorm(50 * 10) / 100, 50, 10)
+  Z   <- array(rnorm(50 * 10 * 4), dim = c(50, 10, 4))
+  expect_error(
+    ipca_est(ret, Z, nfac = 2, factor_mean = "macro"),
+    regexp = "not yet implemented"
+  )
+  expect_error(
+    ipca_est(ret, Z, nfac = 2, factor_mean = "forecombo"),
+    regexp = "not yet implemented"
   )
 })
 
@@ -235,7 +249,7 @@ test_that("print and summary show Factor mean for all three specs", {
   ret <- matrix(rnorm(60 * 12) / 100, 60, 12)
   Z   <- array(rnorm(60 * 12 * 5), dim = c(60, 12, 5))
 
-  for (fm in c("zero", "constant", "VAR")) {
+  for (fm in c("zero", "constant", "VAR1")) {
     fit <- ipca_est(ret, Z, nfac = 2, factor_mean = fm)
 
     out_print   <- capture.output(print(fit))

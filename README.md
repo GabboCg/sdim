@@ -84,11 +84,29 @@ print(fit_ipca)
 #>  Factors         : 3
 #>  Factor mean     : zero
 
+summary(fit_ipca)
+#> Instrumented Principal Components Analysis (IPCA)
+#> ----------------------------------------
+#> Call: ipca_est(ret = ret, Z = Z, nfac = 3)
+#>
+#> Dimensions
+#> ----------------------------------------
+#>  Observations     120
+#>  Characteristics  6
+#>  Factors          3
+#>  Factor mean      zero
+#>
+#> Eigenvalues
+#> ----------------------------------------
+#>                     F1      F2      F3
+#> Eigenvalue      0.8952  0.9336  0.8652
+#> Var. expl. (%) 33.2300 34.6600 32.1200
+
 # With factor mean specifications
 fit_const <- ipca_est(ret, Z, nfac = 3, factor_mean = "constant")
 fit_const$mu   # time-series mean of each factor
 
-fit_var <- ipca_est(ret, Z, nfac = 3, factor_mean = "VAR")
+fit_var <- ipca_est(ret, Z, nfac = 3, factor_mean = "VAR1")
 fit_var$var_coef   # K x K VAR(1) coefficient matrix
 ```
 
