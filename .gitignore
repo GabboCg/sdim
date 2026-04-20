@@ -19,7 +19,6 @@ CLAUDE.md
 # Package directories excluded from version control
 /docs/
 /data-raw/
+/inst/
 
-# Extra files
-inst/*
 
