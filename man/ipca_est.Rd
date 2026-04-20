@@ -4,7 +4,7 @@
 \alias{ipca_est}
 \title{IPCA factor extraction}
 \usage{
-ipca_est(ret, Z, nfac, max_iter = 100, tol = 1e-06)
+ipca_est(ret, Z, nfac, max_iter = 100, tol = 1e-06, factor_mean = "zero")
 }
 \arguments{
 \item{ret}{Numeric matrix (T x N) of asset returns. Use \code{NA} for
@@ -19,12 +19,20 @@ must mirror \code{ret} exactly.}
 
 \item{tol}{Convergence tolerance on Frobenius norm of loading change
 (default 1e-6).}
+
+\item{factor_mean}{Character scalar specifying how the factor mean is
+modelled. One of \code{"zero"} (default), \code{"constant"}, or
+\code{"VAR"}.}
 }
 \value{
 An object of class \code{"sdim_fit"} with fields:
   \code{factors} (T x K), \code{lambda} (L x K characteristic loadings,
   i.e. Gamma in Kelly et al.), \code{eigvals} (factor variances),
-  \code{call}, \code{method = "ipca"}, \code{nfac}.
+  \code{factor_mean} (character scalar), \code{call},
+  \code{method = "ipca"}, \code{nfac}.
+  If \code{factor_mean = "constant"}: also \code{mu} (length-K mean vector).
+  If \code{factor_mean = "VAR"}: also \code{var_coef} (K x K),
+  \code{var_intercept} (length-K), \code{var_resid} ((T-1) x K).
 }
 \description{
 IPCA factor extraction

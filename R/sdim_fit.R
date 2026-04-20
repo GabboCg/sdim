@@ -6,6 +6,7 @@ print.sdim_fit <- function(x, ...) {
     cat(" Observations    :", nrow(x$factors), "\n")
     cat(" Characteristics :", nrow(x$lambda),  "\n")
     cat(" Factors         :", ncol(x$factors), "\n")
+    cat(" Factor mean     :", x$factor_mean,   "\n")
     return(invisible(x))
   }
 
@@ -38,6 +39,8 @@ summary.sdim_fit <- function(object, ...) {
   if (!is.null(object$gmm_stat))
     out$gmm_stat <- object$gmm_stat
 
+  out$factor_mean <- object$factor_mean
+
   class(out) <- "summary.sdim_fit"
   out
 
@@ -66,6 +69,9 @@ print.summary.sdim_fit <- function(x, ...) {
   pred_label <- if (x$method == "ipca") "Characteristics" else "Predictors"
   cat(sprintf(" %-16s %d\n", pred_label, x$n_pred))
   cat(sprintf(" %-16s %d\n", "Factors",       x$n_fac))
+
+  if (!is.null(x$factor_mean) && x$method == "ipca")
+    cat(sprintf(" %-16s %s\n", "Factor mean", x$factor_mean))
 
   if (!is.null(x$gamma))
     cat(sprintf(" %-16s %g\n", "gamma (PCA)",  x$gamma))

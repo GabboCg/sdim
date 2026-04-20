@@ -8,7 +8,7 @@
 
 ## Overview
 
-**sdim** implements four factor extraction methods for asset pricing and macroeconomic forecasting, based on He et al. (2023, MS) and Huang et al. (2022, MS):
+**sdim** implements five factor extraction methods for asset pricing and macroeconomic forecasting:
 
 | Function | Method | Reference |
 |---|---|---|
@@ -16,8 +16,9 @@
 | `pls_est()` | Partial Least Squares (PLS) | He et al. (2023, MS) |
 | `rra_est()` | Reduced-Rank Approach (RRA) | He et al. (2023, MS) |
 | `spca_est()` | Scaled PCA (sPCA) | Huang et al. (2022, MS) |
+| `ipca_est()` | Instrumented PCA (IPCA) | Kelly, Pruitt & Su (2019, JFE) |
 
-PCA, PLS, and RRA take a multivariate target (T×N returns matrix) and a matrix of factor proxies. sPCA takes a univariate target and scales each proxy by its OLS slope on the target before extracting principal components. Performance of extracted factors can be evaluated with `eval_factors()`.
+PCA, PLS, and RRA take a multivariate target (T×N returns matrix) and a matrix of factor proxies. sPCA takes a univariate target and scales each proxy by its OLS slope on the target before extracting principal components. IPCA extracts latent factors from panel data using time-varying characteristics as instruments, estimated via alternating least squares (ALS). Performance of extracted factors can be evaluated with `eval_factors()`.
 
 The package ships with seven `he2023_*` datasets (factor proxies and portfolio returns) from the He et al. (2023, MS) replication package.
 
@@ -64,6 +65,31 @@ eval_factors(ret = ret, factors = fit_rra$factors)
 #>  Total adj-R²       2.9593  (%)
 #>  SR                 0.0522
 #>  A2R                0.9443
+```
+
+### IPCA (panel with time-varying characteristics)
+
+``` r
+# Simulate panel: T periods, N assets, L characteristics
+set.seed(99)
+T <- 120; N <- 50; L <- 6
+ret <- matrix(rnorm(T * N) / 100, T, N)
+Z   <- array(rnorm(T * N * L), dim = c(T, N, L))
+
+fit_ipca <- ipca_est(ret, Z, nfac = 3)
+print(fit_ipca)
+#> <sdim_fit [ipca]>
+#>  Observations    : 120
+#>  Characteristics : 6
+#>  Factors         : 3
+#>  Factor mean     : zero
+
+# With factor mean specifications
+fit_const <- ipca_est(ret, Z, nfac = 3, factor_mean = "constant")
+fit_const$mu   # time-series mean of each factor
+
+fit_var <- ipca_est(ret, Z, nfac = 3, factor_mean = "VAR")
+fit_var$var_coef   # K x K VAR(1) coefficient matrix
 ```
 
 ### sPCA (univariate target)
@@ -161,3 +187,5 @@ If you encounter a bug, please file an issue with a minimal reproducible example
 - He, J., Huang, J., Li, F., and Zhou, G. (2023). "Shrinking Factor Dimension: A Reduced-Rank Approach." *Management Science*, 69(9). [doi:10.1287/mnsc.2022.4563](https://doi.org/10.1287/mnsc.2022.4563)
 
 - Huang, J., Jiang, J., Li, F., Tong, G., and Zhou, G. (2022). "Scaled PCA: A New Approach to Dimension Reduction." *Management Science*, 68(3). [doi:10.1287/mnsc.2021.4020](https://doi.org/10.1287/mnsc.2021.4020)
+
+- Kelly, B. T., Pruitt, S., and Su, Y. (2019). "Characteristics are Covariances: A Unified Model of Risk and Return." *Journal of Financial Economics*, 134(3). [doi:10.1016/j.jfineco.2019.05.001](https://doi.org/10.1016/j.jfineco.2019.05.001)

@@ -20,7 +20,6 @@ CLAUDE.md
 /docs/
 /data-raw/
 
-# Compiled C++ objects and shared libraries
-src/*.o
-src/*.so
-src/*.dll
+# Extra files
+inst/*
+

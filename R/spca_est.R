@@ -155,7 +155,7 @@ print.summary.sdim_spca <- function(x, ...) {
 
   rule <- strrep("-", 40)
 
-  cat("Scaled PCA (sPCA)\n")
+  cat("Scaled Principal Component Analysis (sPCA)\n")
   cat(rule, "\n")
   cat("Call: "); print(x$call)
 
