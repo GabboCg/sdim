@@ -73,7 +73,10 @@ eval_factors(ret = ret, factors = fit_rra$factors)
 ``` r
 # Simulate panel: T periods, N assets, L characteristics
 set.seed(99)
-T <- 120; N <- 50; L <- 6
+T <- 120
+N <- 50
+L <- 6
+
 ret <- matrix(rnorm(T * N) / 100, T, N)
 Z   <- array(rnorm(T * N * L), dim = c(T, N, L))
 
