@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Replicating He et al. (2023): Table 3 • sdim</title>
+<title>Replicating He et al. (2023) • sdim</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
@@ -15,7 +15,7 @@
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Replicating He et al. (2023): Table 3">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Replicating He et al. (2023)">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -61,7 +61,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Replicating He et al. (2023): Table 3</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Replicating He et al. (2023)</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/GabboCg/sdim/blob/main/vignettes/he2023-table3.Rmd" class="external-link"><code>vignettes/he2023-table3.Rmd</code></a></small>
@@ -73,9 +73,11 @@
 <p>This vignette replicates Table 3 from He, Huang, Li, and Zhou (2023),
 “Shrinking Factor Dimension: A Reduced-Rank Approach,” <em>Management
 Science</em>, 69(9).</p>
-<p>The table reports the total adjusted R² (%) of pricing 48 Fama-French
-value-weighted industry portfolios using factors extracted by four
-methods: the Fama-French factors directly (FF), PCA, PLS, and RRA.</p>
+<p>The table reports the total adjusted
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>R</mi><mn>2</mn></msup><annotation encoding="application/x-tex">R^2</annotation></semantics></math>
+(%) of pricing 48 Fama-French value-weighted industry portfolios using
+factors extracted by four methods: the Fama-French factors directly
+(FF), PCA, PLS, and RRA.</p>
 <div class="section level2">
 <h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
 </h2>
@@ -129,10 +131,11 @@ methods: the Fama-French factors directly (FF), PCA, PLS, and RRA.</p>
 <span><span class="co">#&gt; PCA     16.74     20.49     29.91     33.13      40.78</span></span>
 <span><span class="co">#&gt; PLS     23.42     47.19     58.97     61.10      64.28</span></span>
 <span><span class="co">#&gt; RRA     54.60     61.11     64.75     65.38      67.40</span></span></code></pre></div>
-<p>The RRA consistently achieves the highest total R² across all factor
-counts, confirming the main finding of He et al. (2023): the
-reduced-rank approach effectively shrinks factor dimension while
-retaining pricing information.</p>
+<p>The RRA consistently achieves the highest total
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>R</mi><mn>2</mn></msup><annotation encoding="application/x-tex">R^2</annotation></semantics></math>
+across all factor counts, confirming the main finding of He et
+al. (2023): the reduced-rank approach effectively shrinks factor
+dimension while retaining pricing information.</p>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

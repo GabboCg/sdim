@@ -1,12 +1,13 @@
-# Replicating He et al. (2023): Table 3
+# Replicating He et al. (2023)
 
 This vignette replicates Table 3 from He, Huang, Li, and Zhou (2023),
 “Shrinking Factor Dimension: A Reduced-Rank Approach,” *Management
 Science*, 69(9).
 
-The table reports the total adjusted R² (%) of pricing 48 Fama-French
-value-weighted industry portfolios using factors extracted by four
-methods: the Fama-French factors directly (FF), PCA, PLS, and RRA.
+The table reports the total adjusted $R^{2}$ (%) of pricing 48
+Fama-French value-weighted industry portfolios using factors extracted
+by four methods: the Fama-French factors directly (FF), PCA, PLS, and
+RRA.
 
 ## Setup
 
@@ -62,8 +63,8 @@ round(total_r2, 2)
 #> RRA     54.60     61.11     64.75     65.38      67.40
 ```
 
-The RRA consistently achieves the highest total R² across all factor
-counts, confirming the main finding of He et al. (2023): the
+The RRA consistently achieves the highest total $R^{2}$ across all
+factor counts, confirming the main finding of He et al. (2023): the
 reduced-rank approach effectively shrinks factor dimension while
 retaining pricing information.
 
