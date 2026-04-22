@@ -73,14 +73,14 @@ eval_factors(ret = ret, factors = fit_rra$factors)
 ### IPCA (panel with time-varying characteristics)
 
 ``` r
-# Simulate panel: T periods, N assets, L characteristics
+# Simulate panel
 set.seed(99)
-T <- 120
-N <- 50
-L <- 6
+n_periods <- 120
+n_assets  <- 50
+n_chars   <- 6
 
-ret <- matrix(rnorm(T * N) / 100, T, N)
-Z   <- array(rnorm(T * N * L), dim = c(T, N, L))
+ret <- matrix(rnorm(n_periods * n_assets) / 100, n_periods, n_assets)
+Z   <- array(rnorm(n_periods * n_assets * n_chars), dim = c(n_periods, n_assets, n_chars))
 
 fit_ipca <- ipca_est(ret, Z, nfac = 3)
 print(fit_ipca)

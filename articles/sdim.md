@@ -71,9 +71,9 @@ IPCA extracts latent factors from panel data using time-varying
 characteristics as instruments:
 
 ``` r
-T <- 120; N <- 50; L <- 6
-ret_panel <- matrix(rnorm(T * N) / 100, T, N)
-Z <- array(rnorm(T * N * L), dim = c(T, N, L))
+n_periods <- 120; n_assets <- 50; n_chars <- 6
+ret_panel <- matrix(rnorm(n_periods * n_assets) / 100, n_periods, n_assets)
+Z <- array(rnorm(n_periods * n_assets * n_chars), dim = c(n_periods, n_assets, n_chars))
 
 fit_ipca <- ipca_est(ret_panel, Z, nfac = 3)
 #> Warning in ipca_als_cpp(ret_list, z_list, K = nfac, max_iter = max_iter, :
