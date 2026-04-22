@@ -1,0 +1,276 @@
+# sdim
+
+## Overview
+
+**sdim** implements five factor extraction methods for asset pricing and
+macroeconomic forecasting:
+
+| Function                                                             | Method                             | Reference                      |
+|----------------------------------------------------------------------|------------------------------------|--------------------------------|
+| [`pca_est()`](https://gabbocg.github.io/sdim/reference/pca_est.md)   | Principal Component Analysis (PCA) | He et al. (2023, MS)           |
+| [`pls_est()`](https://gabbocg.github.io/sdim/reference/pls_est.md)   | Partial Least Squares (PLS)        | He et al. (2023, MS)           |
+| [`rra_est()`](https://gabbocg.github.io/sdim/reference/rra_est.md)   | Reduced-Rank Approach (RRA)        | He et al. (2023, MS)           |
+| [`spca_est()`](https://gabbocg.github.io/sdim/reference/spca_est.md) | Scaled PCA (sPCA)                  | Huang et al. (2022, MS)        |
+| [`ipca_est()`](https://gabbocg.github.io/sdim/reference/ipca_est.md) | Instrumented PCA (IPCA)            | Kelly, Pruitt & Su (2019, JFE) |
+
+PCA, PLS, and RRA take a multivariate target (T×N returns matrix) and a
+matrix of factor proxies. sPCA takes a univariate target and scales each
+proxy by its OLS slope on the target before extracting principal
+components. IPCA extracts latent factors from panel data using
+time-varying characteristics as instruments, estimated via alternating
+least squares (ALS). Performance of extracted factors can be evaluated
+with
+[`eval_factors()`](https://gabbocg.github.io/sdim/reference/eval_factors.md).
+
+The package ships with seven `he2023_*` datasets (factor proxies and
+portfolio returns) from the He et al. (2023, MS) replication package.
+
+## Installation
+
+``` r
+# Install from GitHub (not yet on CRAN)
+# install.packages("pak")
+pak::pak("GabboCg/sdim")
+```
+
+## Usage
+
+### Quick start
+
+``` r
+library(sdim)
+
+set.seed(42)
+X   <- matrix(rnorm(200 * 20), 200, 20)   # T x L factor proxies
+ret <- matrix(rnorm(200 * 30) / 100, 200, 30)  # T x N returns (target)
+
+# Fit each method
+fit_pca <- pca_est(target = ret, X = X, nfac = 3)
+fit_pls <- pls_est(target = ret, X = X, nfac = 3)
+fit_rra <- rra_est(target = ret, X = X, nfac = 3)
+
+print(fit_rra)
+#> <sdim_fit [rra]>
+#>  Observations : 200
+#>  Predictors   : 20
+#>  Factors      : 3
+
+# Evaluate factor quality (RMSPE and total adj-R² from He et al. 2023, §2.4)
+eval_factors(ret = ret, factors = fit_rra$factors)
+#> Factor Evaluation
+#> ----------------------------------------
+#>  Portfolios       30
+#>  Factors           3
+#>
+#> Performance (He et al., 2023, §2.4)
+#> ----------------------------------------
+#>  RMSPE              0.9875  (%)
+#>  Total adj-R²       2.9593  (%)
+#>  SR                 0.0522
+#>  A2R                0.9443
+```
+
+### IPCA (panel with time-varying characteristics)
+
+``` r
+# Simulate panel: T periods, N assets, L characteristics
+set.seed(99)
+T <- 120; N <- 50; L <- 6
+ret <- matrix(rnorm(T * N) / 100, T, N)
+Z   <- array(rnorm(T * N * L), dim = c(T, N, L))
+
+fit_ipca <- ipca_est(ret, Z, nfac = 3)
+print(fit_ipca)
+#> <sdim_fit [ipca]>
+#>  Observations    : 120
+#>  Characteristics : 6
+#>  Factors         : 3
+#>  Factor mean     : zero
+
+summary(fit_ipca)
+#> Instrumented Principal Components Analysis (IPCA)
+#> ----------------------------------------
+#> Call: ipca_est(ret = ret, Z = Z, nfac = 3)
+#>
+#> Dimensions
+#> ----------------------------------------
+#>  Observations     120
+#>  Characteristics  6
+#>  Factors          3
+#>  Factor mean      zero
+#>
+#> Eigenvalues
+#> ----------------------------------------
+#>                     F1      F2      F3
+#> Eigenvalue      0.8952  0.9336  0.8652
+#> Var. expl. (%) 33.2300 34.6600 32.1200
+
+# With factor mean specifications
+fit_const <- ipca_est(ret, Z, nfac = 3, factor_mean = "constant")
+fit_const$mu   # time-series mean of each factor
+
+fit_var <- ipca_est(ret, Z, nfac = 3, factor_mean = "VAR1")
+fit_var$var_coef   # K x K VAR(1) coefficient matrix
+```
+
+### sPCA (univariate target)
+
+``` r
+y <- rnorm(200)   # univariate return series
+
+fit_spca <- spca_est(target = y, X = X, nfac = 3)
+summary(fit_spca)
+#> Scaled PCA (sPCA)
+#> ----------------------------------------
+#> Call: spca_est(target = y, X = X, nfac = 3)
+#>
+#> Dimensions
+#> ----------------------------------------
+#>  Observations     200
+#>  Predictors        20
+#>  Factors            3
+#>
+#> Eigenvalues
+#> ----------------------------------------
+#>                      F1       F2       F3
+#> Eigenvalue      12.3456   8.7654   5.4321
+#> Var. expl. (%)   46.73    33.20    20.57
+#>
+#> OLS slope summary (beta)
+#> ----------------------------------------
+#>       0%      25%      50%      75%     100%
+#> -0.1234  -0.0512   0.0103   0.0634   0.1521
+```
+
+### Replicating He et al. (2023) — Table 3
+
+``` r
+library(sdim)
+
+# Align dates: he2023_factors ends 12 months earlier than portfolio datasets
+he2023_ff48 <- he2023_ff48vw[1:516, -1] / 100 - he2023_ff5$RF[127:642] / 100 # excess returns
+G <- he2023_factors[1:516, -1] / 100 # factor proxies
+
+f5 <- G[,1:6] # first 6 columns are Fama-French 5 + momentum
+
+# Number of factods and methods' names
+nfact <- c(1, 3, 5, 6, 10)
+methods <- c("FF", "PCA", "PLS", "RRA")
+
+# Empty matrix
+total_r2 <- matrix(NA, nrow = length(methods), ncol = length(nfact))
+
+# Dimension names
+rownames(total_r2) <- methods
+colnames(total_r2) <- paste(nfact, "factors")
+
+for (j in seq_along(nfact)) {
+  
+  # Get number of factors
+  k <- nfact[j]
+  
+  if (k <= 6) {
+    
+    # Factors
+    total_r2["FF", j] <- eval_factors(he2023_ff48, f5[, 1:k])["TotalR2"]
+    
+  }
+  
+  # Fit PCA method
+  fit_pca <- pca_est(target = he2023_ff48, X = G, nfac = k)
+  total_r2["PCA", j] <- eval_factors(he2023_ff48, fit_pca$factors)["TotalR2"]
+  
+  # Fit PLS method
+  fit_pls <- pls_est(target = he2023_ff48, X = G, nfac = k)
+  total_r2["PLS", j] <- eval_factors(he2023_ff48, fit_pls$factors)["TotalR2"]
+  
+  # Fit RRA method
+  fit_rra <- rra_est(target = he2023_ff48, X = G, nfac = k)
+  total_r2["RRA", j] <- eval_factors(he2023_ff48, fit_rra$factors)["TotalR2"]
+  
+}
+
+# Output
+round(total_r2, 2)
+#>     1 factors 3 factors 5 factors 6 factors 10 factors
+#> FF      51.39     55.57     57.77     58.34         NA
+#> PCA     16.74     20.49     29.91     33.13      40.78
+#> PLS     23.42     47.19     58.97     61.10      64.28
+#> RRA     54.60     61.11     64.75     65.38      67.40
+```
+
+## Getting help
+
+If you encounter a bug, please file an issue with a minimal reproducible
+example on [GitHub](https://github.com/GabboCg/sdim/issues). For
+questions, email <gabriel.cabreraguzman@postgrad.manchester.ac.uk>.
+
+## References
+
+- He, J., Huang, J., Li, F., and Zhou, G. (2023). “Shrinking Factor
+  Dimension: A Reduced-Rank Approach.” *Management Science*, 69(9).
+  [doi:10.1287/mnsc.2022.4563](https://doi.org/10.1287/mnsc.2022.4563)
+
+- Huang, J., Jiang, J., Li, F., Tong, G., and Zhou, G. (2022). “Scaled
+  PCA: A New Approach to Dimension Reduction.” *Management Science*,
+  68(3).
+  [doi:10.1287/mnsc.2021.4020](https://doi.org/10.1287/mnsc.2021.4020)
+
+- Kelly, B. T., Pruitt, S., and Su, Y. (2019). “Characteristics are
+  Covariances: A Unified Model of Risk and Return.” *Journal of
+  Financial Economics*, 134(3).
+  [doi:10.1016/j.jfineco.2019.05.001](https://doi.org/10.1016/j.jfineco.2019.05.001)
+
+# Package index
+
+## Factor Extraction
+
+Core estimation functions for supervised dimension reduction.
+
+- [`pca_est()`](https://gabbocg.github.io/sdim/reference/pca_est.md) :
+  PCA factor extraction
+- [`pls_est()`](https://gabbocg.github.io/sdim/reference/pls_est.md) :
+  PLS factor extraction (Matlab-faithful NIPALS algorithm)
+- [`spca_est()`](https://gabbocg.github.io/sdim/reference/spca_est.md) :
+  Scaled PCA factor extraction
+- [`rra_est()`](https://gabbocg.github.io/sdim/reference/rra_est.md) :
+  Reduced-Rank Approach (RRA) factor extraction
+- [`ipca_est()`](https://gabbocg.github.io/sdim/reference/ipca_est.md) :
+  IPCA factor extraction
+
+## Evaluation
+
+Evaluate extracted factors.
+
+- [`eval_factors()`](https://gabbocg.github.io/sdim/reference/eval_factors.md)
+  : Evaluate extracted factors against target returns
+
+## Datasets
+
+Bundled datasets for replication and examples.
+
+- [`he2023_dacheng202`](https://gabbocg.github.io/sdim/reference/he2023_dacheng202.md)
+  : Dacheng 202-portfolio value-weighted returns from He, Huang, Li,
+  Zhou (2023)
+- [`he2023_factors`](https://gabbocg.github.io/sdim/reference/he2023_factors.md)
+  : Factor proxies from He, Huang, Li, Zhou (2023)
+- [`he2023_ff17vw`](https://gabbocg.github.io/sdim/reference/he2023_ff17vw.md)
+  : Fama-French 17-industry value-weighted portfolios from He, Huang,
+  Li, Zhou (2023)
+- [`he2023_ff30vw`](https://gabbocg.github.io/sdim/reference/he2023_ff30vw.md)
+  : Fama-French 30-industry value-weighted portfolios from He, Huang,
+  Li, Zhou (2023)
+- [`he2023_ff48ew`](https://gabbocg.github.io/sdim/reference/he2023_ff48ew.md)
+  : Fama-French 48-industry equal-weighted portfolios from He, Huang,
+  Li, Zhou (2023)
+- [`he2023_ff48vw`](https://gabbocg.github.io/sdim/reference/he2023_ff48vw.md)
+  : Fama-French 48-industry value-weighted portfolios from He, Huang,
+  Li, Zhou (2023)
+- [`he2023_ff5`](https://gabbocg.github.io/sdim/reference/he2023_ff5.md)
+  : Fama-French 5-factor data from He, Huang, Li, Zhou (2023)
+- [`huang2022_ip`](https://gabbocg.github.io/sdim/reference/huang2022_ip.md)
+  : Industrial production growth from Huang, Jiang, Li, Tong, Zhou
+  (2022)
+- [`huang2022_macro`](https://gabbocg.github.io/sdim/reference/huang2022_macro.md)
+  : FRED-MD macro predictors from Huang, Jiang, Li, Tong, Zhou (2022)
+
