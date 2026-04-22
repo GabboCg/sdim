@@ -1,8 +1,8 @@
 ---
-title: "Replicating He et al. (2023): Table 3"
+title: "Replicating He et al. (2023)"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Replicating He et al. (2023): Table 3}
+  %\VignetteIndexEntry{Replicating He et al. (2023)}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -18,7 +18,7 @@ This vignette replicates Table 3 from He, Huang, Li, and Zhou (2023),
 "Shrinking Factor Dimension: A Reduced-Rank Approach," *Management
 Science*, 69(9).
 
-The table reports the total adjusted R² (%) of pricing 48 Fama-French
+The table reports the total adjusted $R^2$ (%) of pricing 48 Fama-French
 value-weighted industry portfolios using factors extracted by four
 methods: the Fama-French factors directly (FF), PCA, PLS, and RRA.
 
@@ -71,7 +71,7 @@ for (j in seq_along(nfact)) {
 round(total_r2, 2)
 ```
 
-The RRA consistently achieves the highest total R² across all factor
+The RRA consistently achieves the highest total $R^2$ across all factor
 counts, confirming the main finding of He et al. (2023): the
 reduced-rank approach effectively shrinks factor dimension while
 retaining pricing information.
