@@ -74,7 +74,7 @@
 Jiang, Li, Tong, and Zhou (2022), “Scaled PCA: A New Approach to
 Dimension Reduction,” <em>Management Science</em>, 68(3).</p>
 <p>The table reports out-of-sample
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>R</mi><mi>O</mi><mn>2</mn></msubsup><mi>S</mi></mrow><annotation encoding="application/x-tex">R^2_OS</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>R</mi><mrow><mi>O</mi><mi>S</mi></mrow><mn>2</mn></msubsup><annotation encoding="application/x-tex">R^2_{OS}</annotation></semantics></math>
 (%) of forecasting 1-month ahead IP growth using PCA and sPCA factors
 extracted from 123 FRED-MD macro variables. The benchmark is an AR model
 with SIC-selected lag order.</p>
@@ -120,7 +120,7 @@ FRED-MD predictors (January 1960 to December 2019).</li>
 PCA/sPCA factors.</li>
 </ul>
 <p>For sPCA, the scaling regression uses the predictive relationship
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mi>_</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow><mspace width="0.222em"></mspace><mi>X</mi><mi>_</mi><mrow><mi>i</mi><mo>,</mo><mi>t</mi></mrow></mrow><annotation encoding="application/x-tex">y\_{t+1} ~ X\_{i,t}</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mspace width="0.222em"></mspace><msub><mi>X</mi><mrow><mi>i</mi><mo>,</mo><mi>t</mi></mrow></msub></mrow><annotation encoding="application/x-tex">y_{t+1} ~ X_{i,t}</annotation></semantics></math>,
 and absolute slopes are winsorized at the 90th percentile. The
 <code><a href="../reference/spca_est.html">spca_est()</a></code> function supports this directly: when
 <code>length(target) &lt; nrow(X)</code>, the first
@@ -265,7 +265,7 @@ iterations and takes several minutes.</p>
   4  7.99 11.97
   5  7.88 13.17</code></pre>
 <p>With 5 factors, PCA achieves
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>R</mi><mi>O</mi><mn>2</mn></msubsup><mi>S</mi></mrow><annotation encoding="application/x-tex">R^2_OS</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>R</mi><mrow><mi>O</mi><mi>S</mi></mrow><mn>2</mn></msubsup><annotation encoding="application/x-tex">R^2_{OS}</annotation></semantics></math>
 = <strong>7.88%</strong> and sPCA achieves
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>R</mi><mi>O</mi><mn>2</mn></msubsup><mi>S</mi></mrow><annotation encoding="application/x-tex">R^2_OS</annotation></semantics></math>
 = <strong>13.17%</strong> — both matching the paper exactly. The sPCA
@@ -280,7 +280,7 @@ forecasting-relevant information into the first few factors.</p>
 <li><p><strong>Predictive alignment</strong>: passing a shorter
 <code>target</code> (T-1 elements) with the full <code>X</code> (T rows)
 ensures the scaling regression uses the predictive relationship
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mi>_</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow><mspace width="0.222em"></mspace><mi>X</mi><mi>_</mi><mrow><mi>i</mi><mo>,</mo><mi>t</mi></mrow></mrow><annotation encoding="application/x-tex">y\_{t+1} ~ X\_{i,t}</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mspace width="0.222em"></mspace><msub><mi>X</mi><mrow><mi>i</mi><mo>,</mo><mi>t</mi></mrow></msub></mrow><annotation encoding="application/x-tex">y_{t+1} ~ X_{i,t}</annotation></semantics></math>
 while factors are extracted from the full training window.</p></li>
 <li><p><strong>Winsorization</strong>: <code>winsorize = TRUE</code>
 with <code>winsor_probs = c(0, 90)</code> caps extreme scaling
