@@ -47,5 +47,8 @@ fit <- ipca_est(ret, Z, nfac = 2)
 print(fit)
 }
 \references{
-Kelly, Pruitt, Su (2019) \doi{10.1016/j.jfineco.2019.05.001}
+Kelly, B. T., Pruitt, S., and Su, Y. (2019).
+  Characteristics are Covariances: A Unified Model of Risk and Return.
+  *Journal of Financial Economics*, 134(3).
+  \doi{10.1016/j.jfineco.2019.05.001}
 }

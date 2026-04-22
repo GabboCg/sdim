@@ -45,7 +45,7 @@ Huang, D., Jiang, F., Li, K., Tong, G., and Zhou, G. (2022).
 
 McCracken, M. W. and Ng, S. (2016).
   FRED-MD: A Monthly Database for Macroeconomic Research.
-  \emph{Journal of Business \& Economic Statistics}, 34(4), 574--589.
+  \emph{Journal of Business and Economic Statistics}, 34(4), 574--589.
   \doi{10.1080/07350015.2015.1086655}
 }
 \keyword{datasets}

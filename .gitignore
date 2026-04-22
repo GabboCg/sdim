@@ -12,6 +12,10 @@
 # Package build
 /doc/
 /Meta/
+src/*.so
+src/*.o
+src/*.dll
+tests/testthat/Rplots.pdf
 
 # Package directories excluded from version control
 /docs/

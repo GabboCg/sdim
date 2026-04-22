@@ -9,7 +9,10 @@
 #'   from He et al. (2023).
 #'
 #' @return An object of class \code{"sdim_fit"}.
-#' @references He, Huang, Li, Zhou (2023) \doi{10.1287/mnsc.2022.4428}
+#' @references He, J., Huang, J., Li, F., and Zhou, G. (2023).
+#'   Shrinking Factor Dimension: A Reduced-Rank Approach.
+#'   *Management Science*, 69(9).
+#'   \doi{10.1287/mnsc.2022.4428}
 #' @examples
 #' set.seed(1)
 #' X <- matrix(rnorm(100 * 8), 100, 8)

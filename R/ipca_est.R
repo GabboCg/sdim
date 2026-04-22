@@ -22,7 +22,10 @@
 #'   If \code{factor_mean = "constant"}: also \code{mu} (length-K mean vector).
 #'   If \code{factor_mean = "VAR1"}: also \code{var_coef} (K x K),
 #'   \code{var_intercept} (length-K), \code{var_resid} ((T-1) x K).
-#' @references Kelly, Pruitt, Su (2019) \doi{10.1016/j.jfineco.2019.05.001}
+#' @references Kelly, B. T., Pruitt, S., and Su, Y. (2019).
+#'   Characteristics are Covariances: A Unified Model of Risk and Return.
+#'   *Journal of Financial Economics*, 134(3).
+#'   \doi{10.1016/j.jfineco.2019.05.001}
 #' @examples
 #' set.seed(1)
 #' ret <- matrix(rnorm(50 * 10) / 100, 50, 10)

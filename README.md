@@ -140,63 +140,6 @@ summary(fit_spca)
 #> -0.1234  -0.0512   0.0103   0.0634   0.1521
 ```
 
-### Replicating He et al. (2023) — Table 3
-
-``` r
-library(sdim)
-
-# Align dates: he2023_factors ends 12 months earlier than portfolio datasets
-he2023_ff48 <- he2023_ff48vw[1:516, -1] / 100 - he2023_ff5$RF[127:642] / 100 # excess returns
-G <- he2023_factors[1:516, -1] / 100 # factor proxies
-
-f5 <- G[,1:6] # first 6 columns are Fama-French 5 + momentum
-
-# Number of factods and methods' names
-nfact <- c(1, 3, 5, 6, 10)
-methods <- c("FF", "PCA", "PLS", "RRA")
-
-# Empty matrix
-total_r2 <- matrix(NA, nrow = length(methods), ncol = length(nfact))
-
-# Dimension names
-rownames(total_r2) <- methods
-colnames(total_r2) <- paste(nfact, "factors")
-
-for (j in seq_along(nfact)) {
-  
-  # Get number of factors
-  k <- nfact[j]
-  
-  if (k <= 6) {
-    
-    # Factors
-    total_r2["FF", j] <- eval_factors(he2023_ff48, f5[, 1:k])["TotalR2"]
-    
-  }
-  
-  # Fit PCA method
-  fit_pca <- pca_est(target = he2023_ff48, X = G, nfac = k)
-  total_r2["PCA", j] <- eval_factors(he2023_ff48, fit_pca$factors)["TotalR2"]
-  
-  # Fit PLS method
-  fit_pls <- pls_est(target = he2023_ff48, X = G, nfac = k)
-  total_r2["PLS", j] <- eval_factors(he2023_ff48, fit_pls$factors)["TotalR2"]
-  
-  # Fit RRA method
-  fit_rra <- rra_est(target = he2023_ff48, X = G, nfac = k)
-  total_r2["RRA", j] <- eval_factors(he2023_ff48, fit_rra$factors)["TotalR2"]
-  
-}
-
-# Output
-round(total_r2, 2)
-#>     1 factors 3 factors 5 factors 6 factors 10 factors
-#> FF      51.39     55.57     57.77     58.34         NA
-#> PCA     16.74     20.49     29.91     33.13      40.78
-#> PLS     23.42     47.19     58.97     61.10      64.28
-#> RRA     54.60     61.11     64.75     65.38      67.40
-```
-
 ## Getting help
 
 If you encounter a bug, please file an issue with a minimal reproducible example on [GitHub](https://github.com/GabboCg/sdim/issues). For questions, email gabriel.cabreraguzman@postgrad.manchester.ac.uk.
