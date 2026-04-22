@@ -7,10 +7,17 @@ navbar:
   structure:
     left:  [intro, reference, articles]
     right: [search, github]
+  components:
+    articles:
+      text: Articles
+      menu:
+        - text: "Replicating He et al. (2023)"
+          href: articles/he2023-table3.html
+        - text: "Replicating Huang et al. (2022)"
+          href: articles/huang2022-table4.html
 
 articles:
   - title: Replications
-    navbar: Replications
     contents:
       - he2023-table3
       - huang2022-table4
@@ -35,6 +42,14 @@ reference:
     desc: Evaluate extracted factors.
     contents:
       - eval_factors
+
+  - title: OOS Forecasting Helpers
+    desc: Utilities for out-of-sample macroeconomic forecasting exercises.
+    contents:
+      - oos_standardize
+      - select_ar_lag_sic
+      - estimate_ar_res
+      - estimate_ardl_multi
 
   - title: Datasets
     desc: Bundled datasets for replication and examples.

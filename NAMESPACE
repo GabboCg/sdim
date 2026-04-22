@@ -8,6 +8,12 @@ export(rra_est)
 export(ipca_est)
 export(eval_factors)
 
+# OOS forecasting helpers
+export(oos_standardize)
+export(select_ar_lag_sic)
+export(estimate_ar_res)
+export(estimate_ardl_multi)
+
 # S3 methods — registered for dispatch, not exported as named functions
 S3method(print,         sdim_fit)
 S3method(summary,       sdim_fit)
