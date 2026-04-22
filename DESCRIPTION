@@ -3,7 +3,10 @@ Type: Package
 Title: An R Package for Supervised Dimension Reduction
 Version: 0.1.0
 Authors@R: c(
-    person("Gabriel Cabrera", email = "your@email.com", role = c("aut", "cre"))
+    person("Gabriel", "Cabrera",
+           email = "gabriel.cabreraguzman@postgrad.manchester.ac.uk",
+           role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-8803-2338"))
   )
 Description: Implements five factor extraction methods for asset pricing and
     macroeconomic forecasting: principal component analysis (PCA), partial
