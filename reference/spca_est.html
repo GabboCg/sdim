@@ -21,7 +21,15 @@ extracted from the scaled predictors."><meta property="og:image" content="https:
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../articles/sdim.html">Get started</a></li>
+<li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Replications</h6></li>
+    <li><a class="dropdown-item" href="../articles/he2023-table3.html">Replicating He et al. (2023) — Table 3</a></li>
+    <li><a class="dropdown-item" href="../articles/huang2022-table4.html">Replicating Huang et al. (2022) — Table 4</a></li>
+  </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/GabboCg/sdim/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -54,11 +62,17 @@ extracted from the scaled predictors.</p>
 
 
 <dl><dt id="arg-target">target<a class="anchor" aria-label="anchor" href="#arg-target"></a></dt>
-<dd><p>A numeric vector of length `T`.</p></dd>
+<dd><p>A numeric vector of length <code>T_reg</code> (<code>T_reg &lt;= T</code>).</p></dd>
 
 
 <dt id="arg-x">X<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>A numeric matrix or data frame with `T` rows and `N` columns.</p></dd>
+<dd><p>A numeric matrix or data frame with <code>T</code> rows and <code>N</code>
+columns. When <code>length(target) &lt; nrow(X)</code>, the first
+<code>length(target)</code> rows of the standardized <code>X</code> are used for the
+scaling regression while all <code>T</code> rows are used for standardization
+and factor extraction. This matches the out-of-sample workflow in
+Huang et al. (2022), where the predictive regression
+<code>y_{t+1} ~ X_t</code> uses fewer rows than the full training window.</p></dd>
 
 
 <dt id="arg-nfac">nfac<a class="anchor" aria-label="anchor" href="#arg-nfac"></a></dt>
@@ -66,25 +80,64 @@ extracted from the scaled predictors.</p>
 
 
 <dt id="arg-winsorize">winsorize<a class="anchor" aria-label="anchor" href="#arg-winsorize"></a></dt>
-<dd><p>Logical; if `TRUE`, winsorize absolute slope estimates
+<dd><p>Logical; if <code>TRUE</code>, winsorize absolute slope estimates
 before scaling predictors.</p></dd>
 
 
 <dt id="arg-winsor-probs">winsor_probs<a class="anchor" aria-label="anchor" href="#arg-winsor-probs"></a></dt>
 <dd><p>Numeric vector of length 2 giving winsorization
-percentiles. Used only when `winsorize = TRUE`.</p></dd>
+percentiles. Used only when <code>winsorize = TRUE</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>An object of class <code>"sdim_spca"</code> with components:</p><dl><dt>factors</dt>
+<dd><p>A <code>T x nfac</code> matrix of extracted sPCA factors.</p></dd>
+
+  <dt>beta</dt>
+<dd><p>A numeric vector of predictor-specific predictive slopes.</p></dd>
+
+  <dt>beta_scaled</dt>
+<dd><p>A numeric vector of scaling coefficients actually used.</p></dd>
+
+  <dt>col_means</dt>
+<dd><p>Column means of <code>X</code> (used by <code>predict</code>).</p></dd>
+
+  <dt>col_sds</dt>
+<dd><p>Column standard deviations of <code>X</code> (used by <code>predict</code>).</p></dd>
+
+  <dt>Xs</dt>
+<dd><p>The standardized predictor matrix.</p></dd>
+
+  <dt>scaleXs</dt>
+<dd><p>The scaled standardized predictor matrix.</p></dd>
+
+  <dt>lambda</dt>
+<dd><p>The estimated loading matrix.</p></dd>
+
+  <dt>residuals</dt>
+<dd><p>Residual matrix from the PCA reconstruction step.</p></dd>
+
+  <dt>ve2</dt>
+<dd><p>Average squared residual by row.</p></dd>
+
+  <dt>eigvals</dt>
+<dd><p>Singular values from the decomposition of <code>scaleXs %*% t(scaleXs)</code>.</p></dd>
+
+  <dt>call</dt>
+<dd><p>The matched function call.</p></dd>
 
 
-
-    </div>
+</dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The function follows the MATLAB implementation supplied by the user, with
-package-style input checking and a structured return object.</p>
+    <p>The function follows the MATLAB implementation of Huang, Jiang, Li, Tong,
+and Zhou (2022).</p>
+    </div>
+    <div class="section level2">
+    <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
+    <p>Huang, Jiang, Li, Tong, Zhou (2022)
+  <a href="https://doi.org/10.1287/mnsc.2021.4020" class="external-link">doi:10.1287/mnsc.2021.4020</a></p>
     </div>
 
     <div class="section level2">
@@ -99,6 +152,11 @@ package-style input checking and a structured return object.</p>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">beta</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1]  0.0007544186  0.0307199352  0.0074016978 -0.0217043884  0.0892871951</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [6]  0.0260282689</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Predictive alignment: target has fewer rows than X</span></span></span>
+<span class="r-in"><span><span class="va">fit2</span> <span class="op">&lt;-</span> <span class="fu">spca_est</span><span class="op">(</span>target <span class="op">=</span> <span class="va">y</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">199</span><span class="op">]</span>, X <span class="op">=</span> <span class="va">X</span>, nfac <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">fit2</span><span class="op">$</span><span class="va">factors</span><span class="op">)</span>  <span class="co"># 200 x 3 (factors for all T rows)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 200   3</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

@@ -238,6 +238,15 @@ Core estimation functions for supervised dimension reduction.
 - [`ipca_est()`](https://gabbocg.github.io/sdim/reference/ipca_est.md) :
   IPCA factor extraction
 
+## Prediction
+
+Project new data onto estimated factor loadings.
+
+- [`predict(`*`<sdim_fit>`*`)`](https://gabbocg.github.io/sdim/reference/predict.sdim_fit.md)
+  : Project new data onto estimated factor loadings
+- [`predict(`*`<sdim_spca>`*`)`](https://gabbocg.github.io/sdim/reference/predict.sdim_spca.md)
+  : Project new data onto estimated sPCA factor loadings
+
 ## Evaluation
 
 Evaluate extracted factors.
@@ -274,3 +283,11 @@ Bundled datasets for replication and examples.
 - [`huang2022_macro`](https://gabbocg.github.io/sdim/reference/huang2022_macro.md)
   : FRED-MD macro predictors from Huang, Jiang, Li, Tong, Zhou (2022)
 
+# Articles
+
+### Replications
+
+- [Replicating He et al. (2023) — Table
+  3](https://gabbocg.github.io/sdim/articles/he2023-table3.md):
+- [Replicating Huang et al. (2022) — Table
+  4](https://gabbocg.github.io/sdim/articles/huang2022-table4.md):

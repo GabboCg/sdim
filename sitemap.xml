@@ -1,6 +1,10 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://gabbocg.github.io/sdim/404.html</loc></url>
 <url><loc>https://gabbocg.github.io/sdim/LICENSE-text.html</loc></url>
+<url><loc>https://gabbocg.github.io/sdim/articles/he2023-table3.html</loc></url>
+<url><loc>https://gabbocg.github.io/sdim/articles/huang2022-table4.html</loc></url>
+<url><loc>https://gabbocg.github.io/sdim/articles/index.html</loc></url>
+<url><loc>https://gabbocg.github.io/sdim/articles/sdim.html</loc></url>
 <url><loc>https://gabbocg.github.io/sdim/authors.html</loc></url>
 <url><loc>https://gabbocg.github.io/sdim/index.html</loc></url>
 <url><loc>https://gabbocg.github.io/sdim/reference/eval_factors.html</loc></url>
@@ -17,6 +21,8 @@
 <url><loc>https://gabbocg.github.io/sdim/reference/ipca_est.html</loc></url>
 <url><loc>https://gabbocg.github.io/sdim/reference/pca_est.html</loc></url>
 <url><loc>https://gabbocg.github.io/sdim/reference/pls_est.html</loc></url>
+<url><loc>https://gabbocg.github.io/sdim/reference/predict.sdim_fit.html</loc></url>
+<url><loc>https://gabbocg.github.io/sdim/reference/predict.sdim_spca.html</loc></url>
 <url><loc>https://gabbocg.github.io/sdim/reference/rra_est.html</loc></url>
 <url><loc>https://gabbocg.github.io/sdim/reference/spca_est.html</loc></url>
 </urlset>

@@ -15,6 +15,15 @@ Core estimation functions for supervised dimension reduction.
 - [`ipca_est()`](https://gabbocg.github.io/sdim/reference/ipca_est.md) :
   IPCA factor extraction
 
+## Prediction
+
+Project new data onto estimated factor loadings.
+
+- [`predict(`*`<sdim_fit>`*`)`](https://gabbocg.github.io/sdim/reference/predict.sdim_fit.md)
+  : Project new data onto estimated factor loadings
+- [`predict(`*`<sdim_spca>`*`)`](https://gabbocg.github.io/sdim/reference/predict.sdim_spca.md)
+  : Project new data onto estimated sPCA factor loadings
+
 ## Evaluation
 
 Evaluate extracted factors.
