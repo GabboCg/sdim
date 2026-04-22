@@ -200,6 +200,19 @@ Evaluate extracted factors.
 - [`eval_factors()`](https://gabbocg.github.io/sdim/reference/eval_factors.md)
   : Evaluate extracted factors against target returns
 
+## OOS Forecasting Helpers
+
+Utilities for out-of-sample macroeconomic forecasting exercises.
+
+- [`oos_standardize()`](https://gabbocg.github.io/sdim/reference/oos_standardize.md)
+  : Standardize columns to zero mean and unit variance
+- [`select_ar_lag_sic()`](https://gabbocg.github.io/sdim/reference/select_ar_lag_sic.md)
+  : Select AR lag order by SIC (BIC)
+- [`estimate_ar_res()`](https://gabbocg.github.io/sdim/reference/estimate_ar_res.md)
+  : Estimate AR(p) model
+- [`estimate_ardl_multi()`](https://gabbocg.github.io/sdim/reference/estimate_ardl_multi.md)
+  : Estimate ARDL(p1, p2) model
+
 ## Datasets
 
 Bundled datasets for replication and examples.

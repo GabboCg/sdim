@@ -8,6 +8,8 @@
 <url><loc>https://gabbocg.github.io/sdim/articles/sdim.html</loc></url>
 <url><loc>https://gabbocg.github.io/sdim/authors.html</loc></url>
 <url><loc>https://gabbocg.github.io/sdim/index.html</loc></url>
+<url><loc>https://gabbocg.github.io/sdim/reference/estimate_ar_res.html</loc></url>
+<url><loc>https://gabbocg.github.io/sdim/reference/estimate_ardl_multi.html</loc></url>
 <url><loc>https://gabbocg.github.io/sdim/reference/eval_factors.html</loc></url>
 <url><loc>https://gabbocg.github.io/sdim/reference/he2023_dacheng202.html</loc></url>
 <url><loc>https://gabbocg.github.io/sdim/reference/he2023_factors.html</loc></url>
@@ -20,11 +22,13 @@
 <url><loc>https://gabbocg.github.io/sdim/reference/huang2022_macro.html</loc></url>
 <url><loc>https://gabbocg.github.io/sdim/reference/index.html</loc></url>
 <url><loc>https://gabbocg.github.io/sdim/reference/ipca_est.html</loc></url>
+<url><loc>https://gabbocg.github.io/sdim/reference/oos_standardize.html</loc></url>
 <url><loc>https://gabbocg.github.io/sdim/reference/pca_est.html</loc></url>
 <url><loc>https://gabbocg.github.io/sdim/reference/pls_est.html</loc></url>
 <url><loc>https://gabbocg.github.io/sdim/reference/predict.sdim_fit.html</loc></url>
 <url><loc>https://gabbocg.github.io/sdim/reference/predict.sdim_spca.html</loc></url>
 <url><loc>https://gabbocg.github.io/sdim/reference/rra_est.html</loc></url>
+<url><loc>https://gabbocg.github.io/sdim/reference/select_ar_lag_sic.html</loc></url>
 <url><loc>https://gabbocg.github.io/sdim/reference/spca_est.html</loc></url>
 </urlset>
 

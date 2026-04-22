@@ -50,12 +50,14 @@ all rows of `X` are standardized and used for factor extraction.
 
 ## Out-of-sample loop
 
-The complete `run_oos()` function below is self-contained. It implements
-the AR benchmark with SIC lag selection, the ARDL forecasting model, and
-uses
-[`sdim::pca_est()`](https://gabbocg.github.io/sdim/reference/pca_est.md)
-/
-[`sdim::spca_est()`](https://gabbocg.github.io/sdim/reference/spca_est.md)
+The `run_oos()` function uses
+[`select_ar_lag_sic()`](https://gabbocg.github.io/sdim/reference/select_ar_lag_sic.md),
+[`estimate_ar_res()`](https://gabbocg.github.io/sdim/reference/estimate_ar_res.md),
+and
+[`estimate_ardl_multi()`](https://gabbocg.github.io/sdim/reference/estimate_ardl_multi.md)
+for the AR benchmark and ARDL forecasting model, and
+[`pca_est()`](https://gabbocg.github.io/sdim/reference/pca_est.md) /
+[`spca_est()`](https://gabbocg.github.io/sdim/reference/spca_est.md)
 with [`predict()`](https://rdrr.io/r/stats/predict.html) for factor
 extraction. The loop runs ~420 iterations and takes several minutes.
 
@@ -66,18 +68,18 @@ run_oos <- function(y, Z, h = 1, p_max = 1, nfac_max = 5) {
   M  <- (1984 - 1959) * 12
   NN <- TT - M
 
-  FC_AR <- rep(NA, NN - (h - 1))
-  FC_PCA <- matrix(NA, NN - (h - 1), nfac_max)
-  FC_sPCA <- matrix(NA, NN - (h - 1), nfac_max)
+  FC_AR    <- rep(NA, NN - (h - 1))
+  FC_PCA   <- matrix(NA, NN - (h - 1), nfac_max)
+  FC_sPCA  <- matrix(NA, NN - (h - 1), nfac_max)
   actual_y <- rep(NA, NN - (h - 1))
 
   for (n in seq_len(NN - (h - 1))) {
 
     actual_y[n] <- mean(y[(M + n):(M + n + h - 1)])
 
-    y_n <- y[1:(M + n - 1)]
-    Z_n <- Z[1:(M + n - 1), ]
-    Zs_n <- scale(Z_n)
+    y_n  <- y[1:(M + n - 1)]
+    Z_n  <- Z[1:(M + n - 1), ]
+    Zs_n <- oos_standardize(Z_n)
     T_n  <- length(y_n)
 
     y_n_h <- vapply(
@@ -87,51 +89,13 @@ run_oos <- function(y, Z, h = 1, p_max = 1, nfac_max = 5) {
     )
 
     # --- AR benchmark with SIC lag selection ---
-    best_sic <- Inf
-    p_ar     <- 0L
-    y_raw    <- y_n[seq_len(length(y_n_h))]
-    y_h_sic  <- y_n_h[(p_max + 1):length(y_n_h)]
-    n_sic    <- length(y_h_sic)
-
-    for (p in 0:p_max) {
-
-      if (p == 0L) {
-
-        ZZ <- matrix(1, n_sic, 1)
-
-      } else {
-     
-        y_lags <- do.call(cbind, lapply(1:p, function(j) {
-
-          y_raw[(p_max - (j - 1)):(TT - j - (h - 1))]
-          
-        }))
-        
-        ZZ <- cbind(1, y_lags[seq_len(n_sic), , drop = FALSE])
-
-      }
-
-      a <- solve(crossprod(ZZ), crossprod(ZZ, y_h_sic))
-      e <- y_h_sic - ZZ %*% a
-      sic <- n_sic * log(sum(e^2) / n_sic) + log(n_sic) * length(a)
-      if (sic < best_sic) { best_sic <- sic; p_ar <- p }
-
-    }
+    p_ar <- select_ar_lag_sic(y_n, h, p_max)
 
     if (p_ar > 0L) {
 
-      y_h_dep <- y_n_h[(p_ar + 1):length(y_n_h)]
-      y_lags  <- do.call(cbind, lapply(1:p_ar, function(j) {
-
-        y_n[(p_ar - (j - 1)):(T_n - j - (h - 1))]
-
-      }))
-
-      y_lags <- y_lags[seq_len(length(y_h_dep)), , drop = FALSE]
-      ZZ <- cbind(1, y_lags)
-      a_hat <- solve(crossprod(ZZ), crossprod(ZZ, y_h_dep))
+      ar_out   <- estimate_ar_res(y_n, h, p_ar)
       y_n_last <- rev(y_n[(T_n - p_ar + 1):T_n])
-      FC_AR[n] <- sum(c(1, y_n_last) * a_hat)
+      FC_AR[n] <- sum(c(1, y_n_last) * ar_out$a_hat)
 
     } else {
 
@@ -151,6 +115,7 @@ run_oos <- function(y, Z, h = 1, p_max = 1, nfac_max = 5) {
       winsorize    = TRUE,
       winsor_probs = c(0, 90)
     )
+
     z_trans_n <- predict(spca_fit, Z_n)
 
     # --- ARDL forecast for each number of factors ---
@@ -160,38 +125,21 @@ run_oos <- function(y, Z, h = 1, p_max = 1, nfac_max = 5) {
 
         z_f <- if (jj == 1) {
           
-          z_pc_n[, 1:cc, drop = FALSE] 
-        
-        } else {
-          
-          z_trans_n[, 1:cc, drop = FALSE]
+          z_pc_n[, 1:cc, drop = FALSE]
 
+        } else {
+            
+          z_trans_n[, 1:cc, drop = FALSE]
+            
         }
+
+        p_ardl <- c(p_ar, 1)
 
         if (p_ar > 0L) {
 
-          p_max_ardl <- max(p_ar, 1)
-          y_h_ardl <- y_n_h[(p_max_ardl + 1):length(y_n_h)]
-          n_ardl <- length(y_h_ardl)
-          y_lags_a <- do.call(cbind, lapply(1:p_max_ardl, function(j) {
-            
-            y_n[(p_max_ardl - (j - 1)):(T_n - j - (h - 1))]
-            
-          }))
-
-          z_lags_a <- do.call(cbind, lapply(1:p_max_ardl, function(j) {
-
-            z_f[(p_max_ardl - (j - 1)):(T_n - j - (h - 1)), , drop = FALSE]
-            
-          }))
-
-          ZZ <- cbind(1,
-                      y_lags_a[seq_len(n_ardl), 1:p_ar, drop = FALSE],
-                      z_lags_a[seq_len(n_ardl), 1:cc, drop = FALSE])
-
-          c_hat <- solve(crossprod(ZZ), crossprod(ZZ, y_h_ardl))
+          c_hat    <- estimate_ardl_multi(y_n, z_f, h, p_ardl)
           y_n_last <- rev(y_n[(T_n - p_ar + 1):T_n])
-          fc <- sum(c(1, y_n_last, z_f[T_n, ]) * c_hat)
+          fc       <- sum(c(1, y_n_last, z_f[T_n, ]) * c_hat)
 
         } else {
 
@@ -213,7 +161,7 @@ run_oos <- function(y, Z, h = 1, p_max = 1, nfac_max = 5) {
 
   # R²_OS for each number of factors
   r2_pca <- r2_spca <- numeric(nfac_max)
-  sse_ar <- sum((actual_y - FC_AR) ^ 2)
+  sse_ar <- sum((actual_y - FC_AR)^2)
 
   for (cc in seq_len(nfac_max)) {
 
@@ -223,7 +171,7 @@ run_oos <- function(y, Z, h = 1, p_max = 1, nfac_max = 5) {
   }
 
   data.frame(K = seq_len(nfac_max), PCA = round(r2_pca, 2), sPCA = round(r2_spca, 2))
-
+  
 }
 
 # Run
