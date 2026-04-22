@@ -1,13 +1,13 @@
 test_that("ipca_est returns sdim_fit with correct dimensions", {
   set.seed(42)
-  T <- 50; N <- 15; L <- 5; K <- 2
-  ret <- matrix(rnorm(T * N) / 100, T, N)
-  Z   <- array(rnorm(T * N * L), dim = c(T, N, L))
+  TT <- 50; NN <- 15; LL <- 5; K <- 2
+  ret <- matrix(rnorm(TT * NN) / 100, TT, NN)
+  Z   <- array(rnorm(TT * NN * LL), dim = c(TT, NN, LL))
   fit <- ipca_est(ret, Z, nfac = K)
   expect_s3_class(fit, "sdim_fit")
   expect_equal(fit$method, "ipca")
-  expect_equal(dim(fit$factors), c(T, K))
-  expect_equal(dim(fit$lambda),  c(L, K))
+  expect_equal(dim(fit$factors), c(TT, K))
+  expect_equal(dim(fit$lambda),  c(LL, K))
   expect_length(fit$eigvals, K)
   expect_false(is.null(fit$call))
 })
@@ -64,11 +64,11 @@ test_that("ipca_est errors when nfac > L", {
 
 test_that("ipca_est errors when N_t < nfac", {
   set.seed(1)
-  T <- 50; N <- 10; L <- 4; K <- 3
-  ret <- matrix(rnorm(T * N) / 100, T, N)
-  Z   <- array(rnorm(T * N * L), dim = c(T, N, L))
-  ret[1, 3:N] <- NA
-  Z[1, 3:N, ] <- NA
+  TT <- 50; NN <- 10; LL <- 4; K <- 3
+  ret <- matrix(rnorm(TT * NN) / 100, TT, NN)
+  Z   <- array(rnorm(TT * NN * LL), dim = c(TT, NN, LL))
+  ret[1, 3:NN] <- NA
+  Z[1, 3:NN, ] <- NA
   expect_error(ipca_est(ret, Z, nfac = K),
                "fewer than nfac")
 })
@@ -88,14 +88,14 @@ test_that("ipca_est errors when Z NAs don't mirror ret", {
 
 test_that("ipca_est recovers true factor structure up to rotation", {
   set.seed(123)
-  T <- 200; N <- 50; L <- 6; K <- 2
-  Gamma_true <- matrix(rnorm(L * K), L, K)
-  F_true     <- matrix(rnorm(T * K), T, K)
-  Z <- array(rnorm(T * N * L), dim = c(T, N, L))
-  ret <- matrix(0, T, N)
-  for (t in seq_len(T)) {
-    Zt <- matrix(Z[t, , ], N, L)
-    ret[t, ] <- Zt %*% Gamma_true %*% F_true[t, ] + rnorm(N, sd = 0.1)
+  TT <- 200; NN <- 50; LL <- 6; K <- 2
+  Gamma_true <- matrix(rnorm(LL * K), LL, K)
+  F_true     <- matrix(rnorm(TT * K), TT, K)
+  Z <- array(rnorm(TT * NN * LL), dim = c(TT, NN, LL))
+  ret <- matrix(0, TT, NN)
+  for (t in seq_len(TT)) {
+    Zt <- matrix(Z[t, , ], NN, LL)
+    ret[t, ] <- Zt %*% Gamma_true %*% F_true[t, ] + rnorm(NN, sd = 0.1)
   }
   fit <- ipca_est(ret, Z, nfac = K, max_iter = 200)
   GG_fit  <- fit$lambda %*% t(fit$lambda)
@@ -143,17 +143,17 @@ test_that("ipca_est works with nfac = L (square Gamma)", {
 
 test_that("ipca_est handles unbalanced panel (10% NAs)", {
   set.seed(99)
-  T <- 60; N <- 20; L <- 4; K <- 2
-  ret <- matrix(rnorm(T * N) / 100, T, N)
-  Z   <- array(rnorm(T * N * L), dim = c(T, N, L))
-  for (i in seq_len(floor(0.10 * T * N))) {
+  TT <- 60; NN <- 20; LL <- 4; K <- 2
+  ret <- matrix(rnorm(TT * NN) / 100, TT, NN)
+  Z   <- array(rnorm(TT * NN * LL), dim = c(TT, NN, LL))
+  for (i in seq_len(floor(0.10 * TT * NN))) {
     t_idx <- sample(which(rowSums(!is.na(ret)) > K + 1), 1)
     n_idx <- sample(which(!is.na(ret[t_idx, ])), 1)
     ret[t_idx, n_idx] <- NA
     Z[t_idx, n_idx, ] <- NA
   }
   fit <- ipca_est(ret, Z, nfac = K)
-  expect_equal(dim(fit$factors), c(T, K))
+  expect_equal(dim(fit$factors), c(TT, K))
 })
 
 test_that("print.sdim_list works with mixed rra and ipca fits", {
@@ -208,22 +208,22 @@ test_that("factor_mean = 'constant' stores mu = colMeans(factors)", {
 
 test_that("factor_mean = 'VAR1' stores var_coef, var_intercept, var_resid", {
   set.seed(12)
-  T <- 60; N <- 15; L <- 4; K <- 2
-  ret <- matrix(rnorm(T * N) / 100, T, N)
-  Z   <- array(rnorm(T * N * L), dim = c(T, N, L))
+  TT <- 60; NN <- 15; LL <- 4; K <- 2
+  ret <- matrix(rnorm(TT * NN) / 100, TT, NN)
+  Z   <- array(rnorm(TT * NN * LL), dim = c(TT, NN, LL))
   fit <- ipca_est(ret, Z, nfac = K, factor_mean = "VAR1")
   expect_equal(fit$factor_mean, "VAR1")
   expect_equal(dim(fit$var_coef),  c(K, K))
   expect_length(fit$var_intercept, K)
-  expect_equal(dim(fit$var_resid), c(T - 1L, K))
+  expect_equal(dim(fit$var_resid), c(TT - 1L, K))
   expect_null(fit$mu)
 })
 
 test_that("factor_mean = 'VAR1' errors when T <= nfac + 1", {
   set.seed(13)
-  K <- 2; T <- K + 1L
-  ret <- matrix(rnorm(T * 10) / 100, T, 10)
-  Z   <- array(rnorm(T * 10 * 4), dim = c(T, 10, 4))
+  K <- 2; TT <- K + 1L
+  ret <- matrix(rnorm(TT * 10) / 100, TT, 10)
+  Z   <- array(rnorm(TT * 10 * 4), dim = c(TT, 10, 4))
   expect_error(
     ipca_est(ret, Z, nfac = K, factor_mean = "VAR1"),
     regexp = "T > nfac \\+ 1"

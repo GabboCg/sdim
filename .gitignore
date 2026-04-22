@@ -22,5 +22,5 @@ tests/testthat/Rplots.pdf
 /data-raw/
 /inst/plans/
 /inst/specs/
-/inst/replications/
+/inst/replications/*
 
