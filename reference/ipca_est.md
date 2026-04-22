@@ -37,8 +37,7 @@ ipca_est(ret, Z, nfac, max_iter = 100, tol = 1e-06, factor_mean = "zero")
 
   Character scalar specifying how the factor mean is modelled. One of
   `"zero"` (default, no mean adjustment), `"constant"` (time-series
-  average), `"VAR1"` (VAR(1) with intercept), `"macro"` (regression on
-  macro predictors), or `"forecombo"` (OLS combination of VAR1 + macro).
+  average), or `"VAR1"` (VAR(1) with intercept).
 
 ## Value
 

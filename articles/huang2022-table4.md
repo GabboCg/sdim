@@ -1,4 +1,4 @@
-# Replicating Huang et al. (2022) — Table 4
+# Replicating Huang et al. (2022): Table 4
 
 This vignette replicates the IP growth results from Table 4 of Huang,
 Jiang, Li, Tong, and Zhou (2022), “Scaled PCA: A New Approach to
@@ -50,63 +50,197 @@ all rows of `X` are standardized and used for factor extraction.
 
 ## Out-of-sample loop
 
-The full replication script is at
-`inst/replications/huang2022_table4.R`. The OOS loop runs ~420
-iterations and takes several minutes; below is a condensed version:
+The complete `run_oos()` function below is self-contained. It implements
+the AR benchmark with SIC lag selection, the ARDL forecasting model, and
+uses
+[`sdim::pca_est()`](https://gabbocg.github.io/sdim/reference/pca_est.md)
+/
+[`sdim::spca_est()`](https://gabbocg.github.io/sdim/reference/spca_est.md)
+with [`predict()`](https://rdrr.io/r/stats/predict.html) for factor
+extraction. The loop runs ~420 iterations and takes several minutes.
 
 ``` r
-Z    <- huang2022_macro
-y_ip <- huang2022_ip
+run_oos <- function(y, Z, h = 1, p_max = 1, nfac_max = 5) {
 
-M <- 300  # initial training window (Jan 1960 - Dec 1984)
-N <- length(y_ip) - M
-nfac_max <- 5
+  TT <- length(y)
+  M  <- (1984 - 1959) * 12
+  NN <- TT - M
 
-FC_AR <- FC_PCA <- FC_sPCA <- actual_y <- rep(NA, N)
+  FC_AR <- rep(NA, NN - (h - 1))
+  FC_PCA <- matrix(NA, NN - (h - 1), nfac_max)
+  FC_sPCA <- matrix(NA, NN - (h - 1), nfac_max)
+  actual_y <- rep(NA, NN - (h - 1))
 
-for (n in seq_len(N)) {
+  for (n in seq_len(NN - (h - 1))) {
 
-  actual_y[n] <- y_ip[M + n]
-  y_n  <- y_ip[1:(M + n - 1)]
-  Z_n  <- Z[1:(M + n - 1), ]
-  Zs_n <- scale(Z_n)  # standardize training window
-  T_n  <- length(y_n)
+    actual_y[n] <- mean(y[(M + n):(M + n + h - 1)])
 
-  # AR benchmark (SIC selects from p = 0 or 1)
-  # ... (see full script for details)
+    y_n <- y[1:(M + n - 1)]
+    Z_n <- Z[1:(M + n - 1), ]
+    Zs_n <- scale(Z_n)
+    T_n  <- length(y_n)
 
-  # PCA factors
-  pca_fit <- pca_est(X = Zs_n, nfac = nfac_max)
-  z_pc    <- predict(pca_fit, Zs_n)
+    y_n_h <- vapply(
+      seq_len(T_n - (h - 1)),
+      function(t) mean(y_n[t:(t + h - 1)]),
+      numeric(1)
+    )
 
-  # sPCA factors (predictive alignment + winsorization)
-  spca_fit <- spca_est(
-    target       = y_n[2:T_n],
-    X            = Z_n,
-    nfac         = nfac_max,
-    winsorize    = TRUE,
-    winsor_probs = c(0, 90)
-  )
-  z_spca <- predict(spca_fit, Z_n)
+    # --- AR benchmark with SIC lag selection ---
+    best_sic <- Inf
+    p_ar     <- 0L
+    y_raw    <- y_n[seq_len(length(y_n_h))]
+    y_h_sic  <- y_n_h[(p_max + 1):length(y_n_h)]
+    n_sic    <- length(y_h_sic)
 
-  # ARDL forecast using factors + AR lag
-  # ... (see full script for details)
+    for (p in 0:p_max) {
+
+      if (p == 0L) {
+
+        ZZ <- matrix(1, n_sic, 1)
+
+      } else {
+     
+        y_lags <- do.call(cbind, lapply(1:p, function(j) {
+
+          y_raw[(p_max - (j - 1)):(TT - j - (h - 1))]
+          
+        }))
+        
+        ZZ <- cbind(1, y_lags[seq_len(n_sic), , drop = FALSE])
+
+      }
+
+      a <- solve(crossprod(ZZ), crossprod(ZZ, y_h_sic))
+      e <- y_h_sic - ZZ %*% a
+      sic <- n_sic * log(sum(e^2) / n_sic) + log(n_sic) * length(a)
+      if (sic < best_sic) { best_sic <- sic; p_ar <- p }
+
+    }
+
+    if (p_ar > 0L) {
+
+      y_h_dep <- y_n_h[(p_ar + 1):length(y_n_h)]
+      y_lags  <- do.call(cbind, lapply(1:p_ar, function(j) {
+
+        y_n[(p_ar - (j - 1)):(T_n - j - (h - 1))]
+
+      }))
+
+      y_lags <- y_lags[seq_len(length(y_h_dep)), , drop = FALSE]
+      ZZ <- cbind(1, y_lags)
+      a_hat <- solve(crossprod(ZZ), crossprod(ZZ, y_h_dep))
+      y_n_last <- rev(y_n[(T_n - p_ar + 1):T_n])
+      FC_AR[n] <- sum(c(1, y_n_last) * a_hat)
+
+    } else {
+
+      FC_AR[n] <- mean(y_n)
+
+    }
+
+    # --- PCA factors ---
+    pca_fit <- pca_est(X = Zs_n, nfac = nfac_max)
+    z_pc_n  <- predict(pca_fit, Zs_n)
+
+    # --- sPCA factors (predictive alignment + winsorization) ---
+    spca_fit <- spca_est(
+      target       = y_n_h[2:length(y_n_h)],
+      X            = Z_n,
+      nfac         = nfac_max,
+      winsorize    = TRUE,
+      winsor_probs = c(0, 90)
+    )
+    z_trans_n <- predict(spca_fit, Z_n)
+
+    # --- ARDL forecast for each number of factors ---
+    for (cc in seq_len(nfac_max)) {
+
+      for (jj in 1:2) {
+
+        z_f <- if (jj == 1) {
+          
+          z_pc_n[, 1:cc, drop = FALSE] 
+        
+        } else {
+          
+          z_trans_n[, 1:cc, drop = FALSE]
+
+        }
+
+        if (p_ar > 0L) {
+
+          p_max_ardl <- max(p_ar, 1)
+          y_h_ardl <- y_n_h[(p_max_ardl + 1):length(y_n_h)]
+          n_ardl <- length(y_h_ardl)
+          y_lags_a <- do.call(cbind, lapply(1:p_max_ardl, function(j) {
+            
+            y_n[(p_max_ardl - (j - 1)):(T_n - j - (h - 1))]
+            
+          }))
+
+          z_lags_a <- do.call(cbind, lapply(1:p_max_ardl, function(j) {
+
+            z_f[(p_max_ardl - (j - 1)):(T_n - j - (h - 1)), , drop = FALSE]
+            
+          }))
+
+          ZZ <- cbind(1,
+                      y_lags_a[seq_len(n_ardl), 1:p_ar, drop = FALSE],
+                      z_lags_a[seq_len(n_ardl), 1:cc, drop = FALSE])
+
+          c_hat <- solve(crossprod(ZZ), crossprod(ZZ, y_h_ardl))
+          y_n_last <- rev(y_n[(T_n - p_ar + 1):T_n])
+          fc <- sum(c(1, y_n_last, z_f[T_n, ]) * c_hat)
+
+        } else {
+
+          dep   <- y_n_h[2:length(y_n_h)]
+          reg   <- cbind(1, z_f[1:(length(y_n_h) - 1 - (h - 1)), 1:cc])
+          c_hat <- lm.fit(x = reg, y = dep)$coefficients
+          fc    <- sum(c(1, z_f[T_n, 1:cc]) * c_hat)
+
+        }
+
+        if (jj == 1) FC_PCA[n, cc]  <- fc
+        if (jj == 2) FC_sPCA[n, cc] <- fc
+
+      }
+
+    }
+
+  }
+
+  # R²_OS for each number of factors
+  r2_pca <- r2_spca <- numeric(nfac_max)
+  sse_ar <- sum((actual_y - FC_AR) ^ 2)
+
+  for (cc in seq_len(nfac_max)) {
+
+    r2_pca[cc]  <- 100 * (1 - sum((actual_y - FC_PCA[, cc])^2)  / sse_ar)
+    r2_spca[cc] <- 100 * (1 - sum((actual_y - FC_sPCA[, cc])^2) / sse_ar)
+
+  }
+
+  data.frame(K = seq_len(nfac_max), PCA = round(r2_pca, 2), sPCA = round(r2_spca, 2))
+
 }
+
+# Run
+res <- run_oos(huang2022_ip, huang2022_macro, h = 1, p_max = 1, nfac_max = 5)
+print(res)
 ```
 
 ## Results
 
-Running the full script produces:
+Running the code above produces:
 
-    R²_OS by number of factors (IP growth):
-      K       PCA     sPCA
-    --------------------------
-      1      8.97     9.65
-      2      8.06    10.68
-      3      8.22    11.09
-      4      7.99    11.97
-      5      7.88    13.17
-    --------------------------
+      K   PCA  sPCA
+      1  8.97  9.65
+      2  8.06 10.68
+      3  8.22 11.09
+      4  7.99 11.97
+      5  7.88 13.17
 
 With 5 factors, PCA achieves R²_OS = **7.88%** and sPCA achieves R²_OS =
 **13.17%** — both matching the paper exactly. The sPCA consistently

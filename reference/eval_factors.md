@@ -52,7 +52,7 @@ A named numeric vector with four elements:
 
 He, J., Huang, J., Li, F., and Zhou, G. (2023). Shrinking Factor
 Dimension: A Reduced-Rank Approach. *Management Science*, 69(9).
-[doi:10.1287/mnsc.2022.4428](https://doi.org/10.1287/mnsc.2022.4428)
+[doi:10.1287/mnsc.2022.4563](https://doi.org/10.1287/mnsc.2022.4563)
 
 ## Examples
 

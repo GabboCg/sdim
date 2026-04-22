@@ -1,4 +1,4 @@
-# Replicating He et al. (2023) — Table 3
+# Replicating He et al. (2023): Table 3
 
 This vignette replicates Table 3 from He, Huang, Li, and Zhou (2023),
 “Shrinking Factor Dimension: A Reduced-Rank Approach,” *Management
@@ -71,4 +71,4 @@ retaining pricing information.
 
 He, J., Huang, J., Li, F., and Zhou, G. (2023). Shrinking Factor
 Dimension: A Reduced-Rank Approach. *Management Science*, 69(9).
-<doi:%5B10.1287/mnsc.2022.4428>\](<https://doi.org/10.1287/mnsc.2022.4428>)
+<doi:%5B10.1287/mnsc.2022.4563>\](<https://doi.org/10.1287/mnsc.2022.4563>)

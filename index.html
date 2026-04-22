@@ -44,8 +44,8 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Replications</h6></li>
-    <li><a class="dropdown-item" href="articles/he2023-table3.html">Replicating He et al. (2023) — Table 3</a></li>
-    <li><a class="dropdown-item" href="articles/huang2022-table4.html">Replicating Huang et al. (2022) — Table 4</a></li>
+    <li><a class="dropdown-item" href="articles/he2023-table3.html">Replicating He et al. (2023): Table 3</a></li>
+    <li><a class="dropdown-item" href="articles/huang2022-table4.html">Replicating Huang et al. (2022): Table 4</a></li>
   </ul>
 </li>
       </ul>
@@ -133,8 +133,8 @@
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://gabbocg.github.io/sdim/">sdim</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span></span>
-<span><span class="va">X</span>   <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">200</span> <span class="op">*</span> <span class="fl">20</span><span class="op">)</span>, <span class="fl">200</span>, <span class="fl">20</span><span class="op">)</span>   <span class="co"># T x L factor proxies</span></span>
-<span><span class="va">ret</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">200</span> <span class="op">*</span> <span class="fl">30</span><span class="op">)</span> <span class="op">/</span> <span class="fl">100</span>, <span class="fl">200</span>, <span class="fl">30</span><span class="op">)</span>  <span class="co"># T x N returns (target)</span></span>
+<span><span class="va">X</span>   <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">200</span> <span class="op">*</span> <span class="fl">20</span><span class="op">)</span>, <span class="fl">200</span>, <span class="fl">20</span><span class="op">)</span> <span class="co"># T x L factor proxies</span></span>
+<span><span class="va">ret</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">200</span> <span class="op">*</span> <span class="fl">30</span><span class="op">)</span> <span class="op">/</span> <span class="fl">100</span>, <span class="fl">200</span>, <span class="fl">30</span><span class="op">)</span> <span class="co"># T x N returns (target)</span></span>
 <span></span>
 <span><span class="co"># Fit each method</span></span>
 <span><span class="va">fit_pca</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/pca_est.html">pca_est</a></span><span class="op">(</span>target <span class="op">=</span> <span class="va">ret</span>, X <span class="op">=</span> <span class="va">X</span>, nfac <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
@@ -167,12 +167,12 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Simulate panel</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">99</span><span class="op">)</span></span>
-<span><span class="va">n_periods</span> <span class="op">&lt;-</span> <span class="fl">120</span></span>
-<span><span class="va">n_assets</span>  <span class="op">&lt;-</span> <span class="fl">50</span></span>
-<span><span class="va">n_chars</span>   <span class="op">&lt;-</span> <span class="fl">6</span></span>
+<span><span class="va">TT</span> <span class="op">&lt;-</span> <span class="fl">120</span></span>
+<span><span class="va">K</span>  <span class="op">&lt;-</span> <span class="fl">50</span></span>
+<span><span class="va">n_chars</span> <span class="op">&lt;-</span> <span class="fl">6</span></span>
 <span></span>
-<span><span class="va">ret</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n_periods</span> <span class="op">*</span> <span class="va">n_assets</span><span class="op">)</span> <span class="op">/</span> <span class="fl">100</span>, <span class="va">n_periods</span>, <span class="va">n_assets</span><span class="op">)</span></span>
-<span><span class="va">Z</span>   <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n_periods</span> <span class="op">*</span> <span class="va">n_assets</span> <span class="op">*</span> <span class="va">n_chars</span><span class="op">)</span>, dim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">n_periods</span>, <span class="va">n_assets</span>, <span class="va">n_chars</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">ret</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">TT</span> <span class="op">*</span> <span class="va">K</span><span class="op">)</span> <span class="op">/</span> <span class="fl">100</span>, <span class="va">TT</span>, <span class="va">K</span><span class="op">)</span></span>
+<span><span class="va">Z</span>   <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">TT</span> <span class="op">*</span> <span class="va">K</span> <span class="op">*</span> <span class="va">n_chars</span><span class="op">)</span>, dim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">TT</span>, <span class="va">K</span>, <span class="va">n_chars</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">fit_ipca</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ipca_est.html">ipca_est</a></span><span class="op">(</span><span class="va">ret</span>, <span class="va">Z</span>, nfac <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">fit_ipca</span><span class="op">)</span></span>
@@ -211,7 +211,7 @@
 <h3 id="spca-univariate-target">sPCA (univariate target)<a class="anchor" aria-label="anchor" href="#spca-univariate-target"></a>
 </h3>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">200</span><span class="op">)</span>   <span class="co"># univariate return series</span></span>
+<code class="sourceCode R"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">200</span><span class="op">)</span> <span class="co"># univariate return series</span></span>
 <span></span>
 <span><span class="va">fit_spca</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/spca_est.html">spca_est</a></span><span class="op">(</span>target <span class="op">=</span> <span class="va">y</span>, X <span class="op">=</span> <span class="va">X</span>, nfac <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit_spca</span><span class="op">)</span></span>
