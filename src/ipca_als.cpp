@@ -44,13 +44,12 @@ List ipca_als_cpp(List ret_list, List Z_list,
       arma::mat A = Gamma.t() * Zt.t() * Zt * Gamma;   // K x K
       arma::vec b = Gamma.t() * Zt.t() * rt;            // K x 1
       arma::vec ft;
-      // arma::solve returns false (does not throw) when no_approx is absent
-      bool ok = arma::solve(ft, A, b, arma::solve_opts::likely_sympd);
+      bool ok = arma::solve(ft, A, b);
       if (!ok) {
         // Ridge fallback for near-singular A
         A.diag() += 1e-8;
-        bool ok2 = arma::solve(ft, A, b);
-        if (!ok2) ft.zeros();
+        ok = arma::solve(ft, A, b);
+        if (!ok) ft.zeros();
       }
       F_mat.row(t) = ft.t();
     }
