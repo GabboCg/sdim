@@ -13,12 +13,10 @@
 /doc/
 /Meta/
 
-# Claude Code
-CLAUDE.md
-
 # Package directories excluded from version control
 /docs/
 /data-raw/
-/inst/
+/inst/plans/
+/inst/specs/
 
 

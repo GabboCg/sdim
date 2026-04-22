@@ -5,31 +5,42 @@
 #' predictive slope on the target, and finally principal components are
 #' extracted from the scaled predictors.
 #'
-#' @param target A numeric vector of length `T`.
-#' @param X A numeric matrix or data frame with `T` rows and `N` columns.
+#' @param target A numeric vector of length \code{T_reg} (\code{T_reg <= T}).
+#' @param X A numeric matrix or data frame with \code{T} rows and \code{N}
+#'   columns. When \code{length(target) < nrow(X)}, the first
+#'   \code{length(target)} rows of the standardized \code{X} are used for the
+#'   scaling regression while all \code{T} rows are used for standardization
+#'   and factor extraction. This matches the out-of-sample workflow in
+#'   Huang et al. (2022), where the predictive regression
+#'   \code{y_{t+1} ~ X_t} uses fewer rows than the full training window.
 #' @param nfac A positive integer giving the number of factors to extract.
-#' @param winsorize Logical; if `TRUE`, winsorize absolute slope estimates
+#' @param winsorize Logical; if \code{TRUE}, winsorize absolute slope estimates
 #'   before scaling predictors.
 #' @param winsor_probs Numeric vector of length 2 giving winsorization
-#'   percentiles. Used only when `winsorize = TRUE`.
+#'   percentiles. Used only when \code{winsorize = TRUE}.
 #'
-#' @return An object of class `"sdim_spca"` with components:
+#' @return An object of class \code{"sdim_spca"} with components:
 #' \describe{
-#'   \item{factors}{A `T x nfac` matrix of extracted sPCA factors.}
+#'   \item{factors}{A \code{T x nfac} matrix of extracted sPCA factors.}
 #'   \item{beta}{A numeric vector of predictor-specific predictive slopes.}
 #'   \item{beta_scaled}{A numeric vector of scaling coefficients actually used.}
+#'   \item{col_means}{Column means of \code{X} (used by \code{predict}).}
+#'   \item{col_sds}{Column standard deviations of \code{X} (used by \code{predict}).}
 #'   \item{Xs}{The standardized predictor matrix.}
 #'   \item{scaleXs}{The scaled standardized predictor matrix.}
 #'   \item{lambda}{The estimated loading matrix.}
 #'   \item{residuals}{Residual matrix from the PCA reconstruction step.}
 #'   \item{ve2}{Average squared residual by row.}
-#'   \item{eigvals}{Singular values from the decomposition of `scaleXs %*% t(scaleXs)`.}
+#'   \item{eigvals}{Singular values from the decomposition of \code{scaleXs \%*\% t(scaleXs)}.}
 #'   \item{call}{The matched function call.}
 #' }
 #'
 #' @details
-#' The function follows the MATLAB implementation supplied by the user, with
-#' package-style input checking and a structured return object.
+#' The function follows the MATLAB implementation of Huang, Jiang, Li, Tong,
+#' and Zhou (2022).
+#'
+#' @references Huang, Jiang, Li, Tong, Zhou (2022)
+#'   \doi{10.1287/mnsc.2021.4020}
 #'
 #' @examples
 #' set.seed(123)
@@ -40,15 +51,22 @@
 #' dim(fit$factors)
 #' head(fit$beta)
 #'
+#' # Predictive alignment: target has fewer rows than X
+#' fit2 <- spca_est(target = y[1:199], X = X, nfac = 3)
+#' dim(fit2$factors)  # 200 x 3 (factors for all T rows)
+#'
 #' @export
 spca_est <- function(target, X, nfac, winsorize = FALSE, winsor_probs = c(0, 99)) {
 
   target <- as.numeric(target)
   X <- .as_numeric_matrix(X)
 
-  if (length(target) != nrow(X)) {
+  T_full <- nrow(X)
+  T_reg  <- length(target)
 
-    stop("`target` and `X` must have the same number of observations.", call. = FALSE)
+  if (T_reg > T_full) {
+
+    stop("`target` cannot have more observations than `X`.", call. = FALSE)
 
   }
 
@@ -66,20 +84,26 @@ spca_est <- function(target, X, nfac, winsorize = FALSE, winsor_probs = c(0, 99)
 
   }
 
-  if (nfac > min(nrow(X), ncol(X))) {
+  if (nfac > min(T_full, ncol(X))) {
 
     stop("`nfac` cannot exceed min(nrow(X), ncol(X)).", call. = FALSE)
 
   }
 
+  # Standardize ALL rows of X
+  col_means <- colMeans(X, na.rm = TRUE)
+  col_sds   <- apply(X, 2, stats::sd, na.rm = TRUE)
   Xs <- .standardize_matrix(X)
 
+  # Scaling regression uses the first T_reg rows of Xs
+  Xs_reg <- Xs[seq_len(T_reg), , drop = FALSE]
+
   beta <- vapply(
-    seq_len(ncol(Xs)),
+    seq_len(ncol(Xs_reg)),
     FUN.VALUE = numeric(1),
     FUN = function(j) {
 
-      fit_j <- stats::lm.fit(x = cbind(1, Xs[, j]), y = target)
+      fit_j <- stats::lm.fit(x = cbind(1, Xs_reg[, j]), y = target)
       unname(fit_j$coefficients[2])
 
     }
@@ -93,14 +117,17 @@ spca_est <- function(target, X, nfac, winsorize = FALSE, winsor_probs = c(0, 99)
 
   }
 
+  # Scale ALL rows of Xs by betas, then extract factors from all T rows
   scaleXs <- sweep(Xs, 2, beta_scaled, `*`)
-  pc_out <- .pc_T(scaleXs, nfac)
+  pc_out  <- .pc_T(scaleXs, nfac)
 
   structure(
     list(
       factors = pc_out$fhat,
       beta = beta,
       beta_scaled = beta_scaled,
+      col_means = col_means,
+      col_sds = col_sds,
       Xs = Xs,
       scaleXs = scaleXs,
       lambda = pc_out$lambda,
@@ -115,6 +142,44 @@ spca_est <- function(target, X, nfac, winsorize = FALSE, winsor_probs = c(0, 99)
 }
 
 ## S3 methods -----------------------------------------------------------------
+
+#' Project new data onto estimated sPCA factor loadings
+#'
+#' Standardizes \code{newdata} using the training column means and standard
+#' deviations, scales by the estimated (possibly winsorized) regression slopes,
+#' and projects onto the sPCA loadings.
+#'
+#' @param object An object of class \code{"sdim_spca"}.
+#' @param newdata A numeric matrix or data frame with the same number of
+#'   columns as the original predictor matrix.
+#' @param ... Additional arguments (currently ignored).
+#'
+#' @return A numeric matrix of projected factors with \code{nrow(newdata)} rows
+#'   and \code{ncol(object$factors)} columns.
+#'
+#' @export
+predict.sdim_spca <- function(object, newdata, ...) {
+
+  newdata <- .as_numeric_matrix(newdata)
+
+  if (ncol(newdata) != length(object$col_means)) {
+    stop(sprintf(
+      "`newdata` has %d columns but the model expects %d.",
+      ncol(newdata), length(object$col_means)
+    ), call. = FALSE)
+  }
+
+  # Standardize using training parameters
+  Xs_new <- sweep(newdata, 2, object$col_means, `-`)
+  Xs_new <- sweep(Xs_new, 2, object$col_sds, `/`)
+
+  # Scale by estimated betas
+  Xs_scaled <- sweep(Xs_new, 2, object$beta_scaled, `*`)
+
+  # Project onto loadings
+  Xs_scaled %*% object$lambda %*% solve(crossprod(object$lambda))
+
+}
 
 #' @export
 print.sdim_spca <- function(x, ...) {

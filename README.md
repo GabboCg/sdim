@@ -2,6 +2,7 @@
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/GabboCg/sdim/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/GabboCg/sdim/actions/workflows/R-CMD-check.yaml)
+[![pkgdown](https://github.com/GabboCg/sdim/actions/workflows/pkgdown.yaml/badge.svg)](https://gabbocg.github.io/sdim/)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 <!-- badges: end -->

@@ -12,6 +12,8 @@ Description: Implements five factor extraction methods for asset pricing and
     (RRA) of He, Huang, Li, and Zhou (2023) <doi:10.1287/mnsc.2022.4563>,
     and Instrumented PCA (IPCA) of Kelly, Pruitt, and Su (2019)
     <doi:10.1016/j.jfineco.2019.05.001>.
+URL: https://gabbocg.github.io/sdim/, https://github.com/GabboCg/sdim
+BugReports: https://github.com/GabboCg/sdim/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

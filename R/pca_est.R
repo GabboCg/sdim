@@ -42,6 +42,7 @@ pca_est <- function(target = NULL, X, nfac, gamma = -1) {
 
   structure(
     list(method = "pca", factors = factors, lambda = lambda,
+         eigvecs = E_k,
          residuals = residuals, eigvals = eigvals, ve2 = ve2,
          call = match.call(), gamma = gamma,
          beta = NULL, beta_scaled = NULL, Xs = NULL, scaleXs = NULL,

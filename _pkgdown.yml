@@ -1,0 +1,30 @@
+url: https://gabbocg.github.io/sdim/
+
+template:
+  bootstrap: 5
+
+navbar:
+  structure:
+    left:  [intro, reference, articles, news]
+    right: [search, github]
+
+reference:
+  - title: Factor Extraction
+    desc: Core estimation functions for supervised dimension reduction.
+    contents:
+      - pca_est
+      - pls_est
+      - spca_est
+      - rra_est
+      - ipca_est
+
+  - title: Evaluation
+    desc: Evaluate extracted factors.
+    contents:
+      - eval_factors
+
+  - title: Datasets
+    desc: Bundled datasets for replication and examples.
+    contents:
+      - starts_with("he2023")
+      - starts_with("huang2022")

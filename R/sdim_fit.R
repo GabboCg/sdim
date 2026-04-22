@@ -125,6 +125,38 @@ plot.sdim_fit <- function(x, index = NULL, ...) {
 
 }
 
+#' Project new data onto estimated factor loadings
+#'
+#' @param object An object of class \code{"sdim_fit"}.
+#' @param newdata A numeric matrix or data frame with the same number of
+#'   columns as the original predictor matrix.
+#' @param ... Additional arguments (currently ignored).
+#'
+#' @return A numeric matrix of projected factors with \code{nrow(newdata)} rows
+#'   and \code{ncol(object$factors)} columns.
+#'
+#' @export
+predict.sdim_fit <- function(object, newdata, ...) {
+
+  newdata <- .as_numeric_matrix(newdata)
+
+  if (ncol(newdata) != nrow(object$lambda)) {
+    stop(sprintf(
+      "`newdata` has %d columns but the model expects %d.",
+      ncol(newdata), nrow(object$lambda)
+    ), call. = FALSE)
+  }
+
+  # PCA stores eigenvectors for exact projection: F_new = newdata %*% E_k
+  if (!is.null(object$eigvecs)) {
+    return(newdata %*% object$eigvecs)
+  }
+
+  # Fallback for other methods: OLS projection through loadings
+  newdata %*% object$lambda %*% solve(crossprod(object$lambda))
+
+}
+
 #' @export
 print.sdim_list <- function(x, ...) {
 

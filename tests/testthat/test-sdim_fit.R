@@ -39,7 +39,7 @@ test_that("summary.sdim_fit returns summary.sdim_fit object", {
 test_that("print.summary.sdim_fit runs without error", {
 
   fit <- make_fit()
-  expect_output(print(summary(fit)), "Model size")
+  expect_output(print(summary(fit)), "Dimensions")
 
 })
 
