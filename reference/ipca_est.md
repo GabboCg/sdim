@@ -51,7 +51,9 @@ K), `var_intercept` (length-K), `var_resid` ((T-1) x K).
 
 ## References
 
-Kelly, Pruitt, Su (2019)
+Kelly, B. T., Pruitt, S., and Su, Y. (2019). Characteristics are
+Covariances: A Unified Model of Risk and Return. \*Journal of Financial
+Economics\*, 134(3).
 [doi:10.1016/j.jfineco.2019.05.001](https://doi.org/10.1016/j.jfineco.2019.05.001)
 
 ## Examples

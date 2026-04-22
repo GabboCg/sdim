@@ -43,7 +43,7 @@ A New Approach to Dimension Reduction. *Management Science*, 68(3),
 [doi:10.1287/mnsc.2021.4020](https://doi.org/10.1287/mnsc.2021.4020)
 
 McCracken, M. W. and Ng, S. (2016). FRED-MD: A Monthly Database for
-Macroeconomic Research. *Journal of Business \\ Economic Statistics*,
+Macroeconomic Research. *Journal of Business and Economic Statistics*,
 34(4), 574–589.
 [doi:10.1080/07350015.2015.1086655](https://doi.org/10.1080/07350015.2015.1086655)
 

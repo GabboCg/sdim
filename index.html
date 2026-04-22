@@ -167,7 +167,10 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Simulate panel: T periods, N assets, L characteristics</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">99</span><span class="op">)</span></span>
-<span><span class="cn">T</span> <span class="op">&lt;-</span> <span class="fl">120</span>; <span class="va">N</span> <span class="op">&lt;-</span> <span class="fl">50</span>; <span class="va">L</span> <span class="op">&lt;-</span> <span class="fl">6</span></span>
+<span><span class="cn">T</span> <span class="op">&lt;-</span> <span class="fl">120</span></span>
+<span><span class="va">N</span> <span class="op">&lt;-</span> <span class="fl">50</span></span>
+<span><span class="va">L</span> <span class="op">&lt;-</span> <span class="fl">6</span></span>
+<span></span>
 <span><span class="va">ret</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="cn">T</span> <span class="op">*</span> <span class="va">N</span><span class="op">)</span> <span class="op">/</span> <span class="fl">100</span>, <span class="cn">T</span>, <span class="va">N</span><span class="op">)</span></span>
 <span><span class="va">Z</span>   <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="cn">T</span> <span class="op">*</span> <span class="va">N</span> <span class="op">*</span> <span class="va">L</span><span class="op">)</span>, dim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">T</span>, <span class="va">N</span>, <span class="va">L</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -233,63 +236,6 @@
 <span><span class="co">#&gt;       0%      25%      50%      75%     100%</span></span>
 <span><span class="co">#&gt; -0.1234  -0.0512   0.0103   0.0634   0.1521</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="replicating-he-et-al-2023--table-3">Replicating He et al. (2023) — Table 3<a class="anchor" aria-label="anchor" href="#replicating-he-et-al-2023--table-3"></a>
-</h3>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://gabbocg.github.io/sdim/">sdim</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Align dates: he2023_factors ends 12 months earlier than portfolio datasets</span></span>
-<span><span class="va">he2023_ff48</span> <span class="op">&lt;-</span> <span class="va">he2023_ff48vw</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">516</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span> <span class="op">/</span> <span class="fl">100</span> <span class="op">-</span> <span class="va">he2023_ff5</span><span class="op">$</span><span class="va">RF</span><span class="op">[</span><span class="fl">127</span><span class="op">:</span><span class="fl">642</span><span class="op">]</span> <span class="op">/</span> <span class="fl">100</span> <span class="co"># excess returns</span></span>
-<span><span class="va">G</span> <span class="op">&lt;-</span> <span class="va">he2023_factors</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">516</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span> <span class="op">/</span> <span class="fl">100</span> <span class="co"># factor proxies</span></span>
-<span></span>
-<span><span class="va">f5</span> <span class="op">&lt;-</span> <span class="va">G</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span> <span class="co"># first 6 columns are Fama-French 5 + momentum</span></span>
-<span></span>
-<span><span class="co"># Number of factods and methods' names</span></span>
-<span><span class="va">nfact</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">5</span>, <span class="fl">6</span>, <span class="fl">10</span><span class="op">)</span></span>
-<span><span class="va">methods</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"FF"</span>, <span class="st">"PCA"</span>, <span class="st">"PLS"</span>, <span class="st">"RRA"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Empty matrix</span></span>
-<span><span class="va">total_r2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="cn">NA</span>, nrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">methods</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">nfact</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Dimension names</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">total_r2</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">methods</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">total_r2</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">nfact</span>, <span class="st">"factors"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="kw">for</span> <span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">nfact</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  </span>
-<span>  <span class="co"># Get number of factors</span></span>
-<span>  <span class="va">k</span> <span class="op">&lt;-</span> <span class="va">nfact</span><span class="op">[</span><span class="va">j</span><span class="op">]</span></span>
-<span>  </span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">k</span> <span class="op">&lt;=</span> <span class="fl">6</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    </span>
-<span>    <span class="co"># Factors</span></span>
-<span>    <span class="va">total_r2</span><span class="op">[</span><span class="st">"FF"</span>, <span class="va">j</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/eval_factors.html">eval_factors</a></span><span class="op">(</span><span class="va">he2023_ff48</span>, <span class="va">f5</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="va">k</span><span class="op">]</span><span class="op">)</span><span class="op">[</span><span class="st">"TotalR2"</span><span class="op">]</span></span>
-<span>    </span>
-<span>  <span class="op">}</span></span>
-<span>  </span>
-<span>  <span class="co"># Fit PCA method</span></span>
-<span>  <span class="va">fit_pca</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/pca_est.html">pca_est</a></span><span class="op">(</span>target <span class="op">=</span> <span class="va">he2023_ff48</span>, X <span class="op">=</span> <span class="va">G</span>, nfac <span class="op">=</span> <span class="va">k</span><span class="op">)</span></span>
-<span>  <span class="va">total_r2</span><span class="op">[</span><span class="st">"PCA"</span>, <span class="va">j</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/eval_factors.html">eval_factors</a></span><span class="op">(</span><span class="va">he2023_ff48</span>, <span class="va">fit_pca</span><span class="op">$</span><span class="va">factors</span><span class="op">)</span><span class="op">[</span><span class="st">"TotalR2"</span><span class="op">]</span></span>
-<span>  </span>
-<span>  <span class="co"># Fit PLS method</span></span>
-<span>  <span class="va">fit_pls</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/pls_est.html">pls_est</a></span><span class="op">(</span>target <span class="op">=</span> <span class="va">he2023_ff48</span>, X <span class="op">=</span> <span class="va">G</span>, nfac <span class="op">=</span> <span class="va">k</span><span class="op">)</span></span>
-<span>  <span class="va">total_r2</span><span class="op">[</span><span class="st">"PLS"</span>, <span class="va">j</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/eval_factors.html">eval_factors</a></span><span class="op">(</span><span class="va">he2023_ff48</span>, <span class="va">fit_pls</span><span class="op">$</span><span class="va">factors</span><span class="op">)</span><span class="op">[</span><span class="st">"TotalR2"</span><span class="op">]</span></span>
-<span>  </span>
-<span>  <span class="co"># Fit RRA method</span></span>
-<span>  <span class="va">fit_rra</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/rra_est.html">rra_est</a></span><span class="op">(</span>target <span class="op">=</span> <span class="va">he2023_ff48</span>, X <span class="op">=</span> <span class="va">G</span>, nfac <span class="op">=</span> <span class="va">k</span><span class="op">)</span></span>
-<span>  <span class="va">total_r2</span><span class="op">[</span><span class="st">"RRA"</span>, <span class="va">j</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/eval_factors.html">eval_factors</a></span><span class="op">(</span><span class="va">he2023_ff48</span>, <span class="va">fit_rra</span><span class="op">$</span><span class="va">factors</span><span class="op">)</span><span class="op">[</span><span class="st">"TotalR2"</span><span class="op">]</span></span>
-<span>  </span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="co"># Output</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">total_r2</span>, <span class="fl">2</span><span class="op">)</span></span>
-<span><span class="co">#&gt;     1 factors 3 factors 5 factors 6 factors 10 factors</span></span>
-<span><span class="co">#&gt; FF      51.39     55.57     57.77     58.34         NA</span></span>
-<span><span class="co">#&gt; PCA     16.74     20.49     29.91     33.13      40.78</span></span>
-<span><span class="co">#&gt; PLS     23.42     47.19     58.97     61.10      64.28</span></span>
-<span><span class="co">#&gt; RRA     54.60     61.11     64.75     65.38      67.40</span></span></code></pre></div>
-</div>
 </div>
 <div class="section level2">
 <h2 id="getting-help">Getting help<a class="anchor" aria-label="anchor" href="#getting-help"></a>
@@ -317,9 +263,8 @@
 <div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li>
-<a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a>
-</li>
+<li><a href="LICENSE.html">Full license</a></li>
+<li><small><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
 
