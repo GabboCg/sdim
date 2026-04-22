@@ -1,0 +1,148 @@
+---
+title: "Replicating Huang et al. (2022) — Table 4"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Replicating Huang et al. (2022) — Table 4}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This vignette replicates the IP growth results from Table 4 of Huang,
+Jiang, Li, Tong, and Zhou (2022), "Scaled PCA: A New Approach to
+Dimension Reduction," *Management Science*, 68(3).
+
+The table reports out-of-sample R²_OS (%) of forecasting 1-month ahead
+IP growth using PCA and sPCA factors extracted from 123 FRED-MD macro
+variables. The benchmark is an AR model with SIC-selected lag order.
+
+## Data
+
+The package includes the authors' original data:
+
+- `huang2022_macro`: 720 × 123 matrix of transformed FRED-MD predictors
+  (January 1960 to December 2019).
+- `huang2022_ip`: 720-vector of monthly IP growth (log-difference of IP
+  index).
+
+```{r}
+library(sdim)
+
+data(huang2022_macro)
+data(huang2022_ip)
+
+dim(huang2022_macro)
+length(huang2022_ip)
+```
+
+## Methodology
+
+The out-of-sample exercise uses an expanding window:
+
+- **Initial estimation window**: January 1960 to December 1984 (300 months).
+- **Out-of-sample period**: January 1985 to December 2019 (420 months).
+- **Benchmark**: AR model with lag order selected by SIC (max lag = 1).
+- **Factor models**: ARDL model with AR lags + 1 lag of PCA/sPCA factors.
+
+For sPCA, the scaling regression uses the predictive relationship
+y\_{t+1} ~ X\_{i,t}, and absolute slopes are winsorized at the 90th
+percentile. The `spca_est()` function supports this directly: when
+`length(target) < nrow(X)`, the first `length(target)` rows are used for
+the scaling regression while all rows of `X` are standardized and used
+for factor extraction.
+
+## Out-of-sample loop
+
+The full replication script is at `inst/replications/huang2022_table4.R`.
+The OOS loop runs ~420 iterations and takes several minutes; below is a
+condensed version:
+
+```{r, eval = FALSE}
+Z    <- huang2022_macro
+y_ip <- huang2022_ip
+
+M <- 300  # initial training window (Jan 1960 - Dec 1984)
+N <- length(y_ip) - M
+nfac_max <- 5
+
+FC_AR <- FC_PCA <- FC_sPCA <- actual_y <- rep(NA, N)
+
+for (n in seq_len(N)) {
+
+  actual_y[n] <- y_ip[M + n]
+  y_n  <- y_ip[1:(M + n - 1)]
+  Z_n  <- Z[1:(M + n - 1), ]
+  Zs_n <- scale(Z_n)  # standardize training window
+  T_n  <- length(y_n)
+
+  # AR benchmark (SIC selects from p = 0 or 1)
+  # ... (see full script for details)
+
+  # PCA factors
+  pca_fit <- pca_est(X = Zs_n, nfac = nfac_max)
+  z_pc    <- predict(pca_fit, Zs_n)
+
+  # sPCA factors (predictive alignment + winsorization)
+  spca_fit <- spca_est(
+    target       = y_n[2:T_n],
+    X            = Z_n,
+    nfac         = nfac_max,
+    winsorize    = TRUE,
+    winsor_probs = c(0, 90)
+  )
+  z_spca <- predict(spca_fit, Z_n)
+
+  # ARDL forecast using factors + AR lag
+  # ... (see full script for details)
+}
+```
+
+## Results
+
+Running the full script produces:
+
+```
+R²_OS by number of factors (IP growth):
+  K       PCA     sPCA
+--------------------------
+  1      8.97     9.65
+  2      8.06    10.68
+  3      8.22    11.09
+  4      7.99    11.97
+  5      7.88    13.17
+--------------------------
+```
+
+With 5 factors, PCA achieves R²_OS = **7.88%** and sPCA achieves
+R²_OS = **13.17%** — both matching the paper exactly. The sPCA
+consistently outperforms PCA across all factor counts, confirming
+that scaling predictors by their target-predictive slopes concentrates
+forecasting-relevant information into the first few factors.
+
+## Key `spca_est()` features used
+
+1. **Predictive alignment**: passing a shorter `target` (T-1 elements)
+   with the full `X` (T rows) ensures the scaling regression uses the
+   predictive relationship y\_{t+1} ~ X\_{i,t} while factors are
+   extracted from the full training window.
+
+2. **Winsorization**: `winsorize = TRUE` with `winsor_probs = c(0, 90)`
+   caps extreme scaling coefficients at the 90th percentile, matching
+   the authors' MATLAB implementation.
+
+3. **`predict()`**: projects the full training `X` onto the estimated
+   sPCA loadings, correctly applying the training-window standardization
+   and scaling.
+
+## References
+
+Huang, D., Jiang, F., Li, K., Tong, G., and Zhou, G. (2022). Scaled
+PCA: A New Approach to Dimension Reduction. *Management Science*, 68(3),
+1678--1695.
+doi:[10.1287/mnsc.2021.4020](https://doi.org/10.1287/mnsc.2021.4020)

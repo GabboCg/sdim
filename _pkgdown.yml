@@ -5,8 +5,15 @@ template:
 
 navbar:
   structure:
-    left:  [intro, reference, articles, news]
+    left:  [intro, reference, articles]
     right: [search, github]
+
+articles:
+  - title: Replications
+    navbar: Replications
+    contents:
+      - he2023-table3
+      - huang2022-table4
 
 reference:
   - title: Factor Extraction
@@ -17,6 +24,12 @@ reference:
       - spca_est
       - rra_est
       - ipca_est
+
+  - title: Prediction
+    desc: Project new data onto estimated factor loadings.
+    contents:
+      - predict.sdim_fit
+      - predict.sdim_spca
 
   - title: Evaluation
     desc: Evaluate extracted factors.

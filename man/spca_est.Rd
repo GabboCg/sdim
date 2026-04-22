@@ -7,20 +7,40 @@
 spca_est(target, X, nfac, winsorize = FALSE, winsor_probs = c(0, 99))
 }
 \arguments{
-\item{target}{A numeric vector of length `T`.}
+\item{target}{A numeric vector of length \code{T_reg} (\code{T_reg <= T}).}
 
-\item{X}{A numeric matrix or data frame with `T` rows and `N` columns.}
+\item{X}{A numeric matrix or data frame with \code{T} rows and \code{N}
+columns. When \code{length(target) < nrow(X)}, the first
+\code{length(target)} rows of the standardized \code{X} are used for the
+scaling regression while all \code{T} rows are used for standardization
+and factor extraction. This matches the out-of-sample workflow in
+Huang et al. (2022), where the predictive regression
+\code{y_{t+1} ~ X_t} uses fewer rows than the full training window.}
 
 \item{nfac}{A positive integer giving the number of factors to extract.}
 
-\item{winsorize}{Logical; if `TRUE`, winsorize absolute slope estimates
+\item{winsorize}{Logical; if \code{TRUE}, winsorize absolute slope estimates
 before scaling predictors.}
 
 \item{winsor_probs}{Numeric vector of length 2 giving winsorization
-percentiles. Used only when `winsorize = TRUE`.}
+percentiles. Used only when \code{winsorize = TRUE}.}
 }
 \value{
-
+An object of class \code{"sdim_spca"} with components:
+\describe{
+  \item{factors}{A \code{T x nfac} matrix of extracted sPCA factors.}
+  \item{beta}{A numeric vector of predictor-specific predictive slopes.}
+  \item{beta_scaled}{A numeric vector of scaling coefficients actually used.}
+  \item{col_means}{Column means of \code{X} (used by \code{predict}).}
+  \item{col_sds}{Column standard deviations of \code{X} (used by \code{predict}).}
+  \item{Xs}{The standardized predictor matrix.}
+  \item{scaleXs}{The scaled standardized predictor matrix.}
+  \item{lambda}{The estimated loading matrix.}
+  \item{residuals}{Residual matrix from the PCA reconstruction step.}
+  \item{ve2}{Average squared residual by row.}
+  \item{eigvals}{Singular values from the decomposition of \code{scaleXs \%*\% t(scaleXs)}.}
+  \item{call}{The matched function call.}
+}
 }
 \description{
 Implements scaled principal component analysis (sPCA): predictors are first
@@ -29,8 +49,8 @@ predictive slope on the target, and finally principal components are
 extracted from the scaled predictors.
 }
 \details{
-The function follows the MATLAB implementation supplied by the user, with
-package-style input checking and a structured return object.
+The function follows the MATLAB implementation of Huang, Jiang, Li, Tong,
+and Zhou (2022).
 }
 \examples{
 set.seed(123)
@@ -41,4 +61,12 @@ fit <- spca_est(target = y, X = X, nfac = 3)
 dim(fit$factors)
 head(fit$beta)
 
+# Predictive alignment: target has fewer rows than X
+fit2 <- spca_est(target = y[1:199], X = X, nfac = 3)
+dim(fit2$factors)  # 200 x 3 (factors for all T rows)
+
+}
+\references{
+Huang, Jiang, Li, Tong, Zhou (2022)
+  \doi{10.1287/mnsc.2021.4020}
 }
