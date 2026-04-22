@@ -20,7 +20,7 @@ A data.frame with 652 rows and 9 variables:
 }
 \source{
 He, Huang, Li, Zhou (2023) replication package,
-  \url{https://pubsonline.informs.org/doi/10.1287/mnsc.2022.4428}.
+  \url{https://pubsonline.informs.org/doi/10.1287/mnsc.2022.4563}.
 }
 \usage{
 he2023_ff5
@@ -44,6 +44,6 @@ head(he2023_ff5)
 He, J., Huang, J., Li, F., and Zhou, G. (2023).
   Shrinking Factor Dimension: A Reduced-Rank Approach.
   \emph{Management Science}, 69(9).
-  \doi{10.1287/mnsc.2022.4428}
+  \doi{10.1287/mnsc.2022.4563}
 }
 \keyword{datasets}

@@ -39,8 +39,8 @@ pak::pak("GabboCg/sdim")
 library(sdim)
 
 set.seed(42)
-X   <- matrix(rnorm(200 * 20), 200, 20)   # T x L factor proxies
-ret <- matrix(rnorm(200 * 30) / 100, 200, 30)  # T x N returns (target)
+X   <- matrix(rnorm(200 * 20), 200, 20) # T x L factor proxies
+ret <- matrix(rnorm(200 * 30) / 100, 200, 30) # T x N returns (target)
 
 # Fit each method
 fit_pca <- pca_est(target = ret, X = X, nfac = 3)
@@ -73,12 +73,12 @@ eval_factors(ret = ret, factors = fit_rra$factors)
 ``` r
 # Simulate panel
 set.seed(99)
-n_periods <- 120
-n_assets  <- 50
-n_chars   <- 6
+TT <- 120
+K  <- 50
+n_chars <- 6
 
-ret <- matrix(rnorm(n_periods * n_assets) / 100, n_periods, n_assets)
-Z   <- array(rnorm(n_periods * n_assets * n_chars), dim = c(n_periods, n_assets, n_chars))
+ret <- matrix(rnorm(TT * K) / 100, TT, K)
+Z   <- array(rnorm(TT * K * n_chars), dim = c(TT, K, n_chars))
 
 fit_ipca <- ipca_est(ret, Z, nfac = 3)
 print(fit_ipca)
@@ -117,7 +117,7 @@ fit_var$var_coef   # K x K VAR(1) coefficient matrix
 ### sPCA (univariate target)
 
 ``` r
-y <- rnorm(200)   # univariate return series
+y <- rnorm(200) # univariate return series
 
 fit_spca <- spca_est(target = y, X = X, nfac = 3)
 summary(fit_spca)

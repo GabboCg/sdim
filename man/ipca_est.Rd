@@ -22,9 +22,8 @@ must mirror \code{ret} exactly.}
 
 \item{factor_mean}{Character scalar specifying how the factor mean is
 modelled. One of \code{"zero"} (default, no mean adjustment),
-\code{"constant"} (time-series average), \code{"VAR1"} (VAR(1) with
-intercept), \code{"macro"} (regression on macro predictors), or
-\code{"forecombo"} (OLS combination of VAR1 + macro).}
+\code{"constant"} (time-series average), or \code{"VAR1"} (VAR(1) with
+intercept).}
 }
 \value{
 An object of class \code{"sdim_fit"} with fields:

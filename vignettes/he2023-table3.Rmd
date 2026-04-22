@@ -1,8 +1,8 @@
 ---
-title: "Replicating He et al. (2023) — Table 3"
+title: "Replicating He et al. (2023): Table 3"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Replicating He et al. (2023) — Table 3}
+  %\VignetteIndexEntry{Replicating He et al. (2023): Table 3}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -80,4 +80,4 @@ retaining pricing information.
 
 He, J., Huang, J., Li, F., and Zhou, G. (2023). Shrinking Factor
 Dimension: A Reduced-Rank Approach. *Management Science*, 69(9).
-doi:[10.1287/mnsc.2022.4428](https://doi.org/10.1287/mnsc.2022.4428)
+doi:[10.1287/mnsc.2022.4563](https://doi.org/10.1287/mnsc.2022.4563)

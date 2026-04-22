@@ -20,11 +20,11 @@
 #'   Align dates before passing \code{he2023_factors} as \code{X} and any
 #'   portfolio dataset as \code{target}.
 #' @source He, Huang, Li, Zhou (2023) replication package,
-#'   \url{https://pubsonline.informs.org/doi/10.1287/mnsc.2022.4428}.
+#'   \url{https://pubsonline.informs.org/doi/10.1287/mnsc.2022.4563}.
 #' @references He, J., Huang, J., Li, F., and Zhou, G. (2023).
 #'   Shrinking Factor Dimension: A Reduced-Rank Approach.
 #'   \emph{Management Science}, 69(9).
-#'   \doi{10.1287/mnsc.2022.4428}
+#'   \doi{10.1287/mnsc.2022.4563}
 #' @keywords datasets
 #' @examples
 #' head(he2023_factors[, 1:5])
@@ -44,11 +44,11 @@
 #'   \item{...}{46 additional industry portfolio returns (percent).}
 #' }
 #' @source He, Huang, Li, Zhou (2023) replication package,
-#'   \url{https://pubsonline.informs.org/doi/10.1287/mnsc.2022.4428}.
+#'   \url{https://pubsonline.informs.org/doi/10.1287/mnsc.2022.4563}.
 #' @references He, J., Huang, J., Li, F., and Zhou, G. (2023).
 #'   Shrinking Factor Dimension: A Reduced-Rank Approach.
 #'   \emph{Management Science}, 69(9).
-#'   \doi{10.1287/mnsc.2022.4428}
+#'   \doi{10.1287/mnsc.2022.4563}
 #' @keywords datasets
 #' @examples
 #' head(he2023_ff48vw[, 1:5])
@@ -67,11 +67,11 @@
 #'   \item{...}{29 additional industry portfolio returns (percent).}
 #' }
 #' @source He, Huang, Li, Zhou (2023) replication package,
-#'   \url{https://pubsonline.informs.org/doi/10.1287/mnsc.2022.4428}.
+#'   \url{https://pubsonline.informs.org/doi/10.1287/mnsc.2022.4563}.
 #' @references He, J., Huang, J., Li, F., and Zhou, G. (2023).
 #'   Shrinking Factor Dimension: A Reduced-Rank Approach.
 #'   \emph{Management Science}, 69(9).
-#'   \doi{10.1287/mnsc.2022.4428}
+#'   \doi{10.1287/mnsc.2022.4563}
 #' @keywords datasets
 #' @examples
 #' head(he2023_ff30vw[, 1:5])
@@ -90,11 +90,11 @@
 #'   \item{...}{16 additional industry portfolio returns (percent).}
 #' }
 #' @source He, Huang, Li, Zhou (2023) replication package,
-#'   \url{https://pubsonline.informs.org/doi/10.1287/mnsc.2022.4428}.
+#'   \url{https://pubsonline.informs.org/doi/10.1287/mnsc.2022.4563}.
 #' @references He, J., Huang, J., Li, F., and Zhou, G. (2023).
 #'   Shrinking Factor Dimension: A Reduced-Rank Approach.
 #'   \emph{Management Science}, 69(9).
-#'   \doi{10.1287/mnsc.2022.4428}
+#'   \doi{10.1287/mnsc.2022.4563}
 #' @keywords datasets
 #' @examples
 #' head(he2023_ff17vw[, 1:5])
@@ -114,11 +114,11 @@
 #'   \item{...}{46 additional industry portfolio returns (percent).}
 #' }
 #' @source He, Huang, Li, Zhou (2023) replication package,
-#'   \url{https://pubsonline.informs.org/doi/10.1287/mnsc.2022.4428}.
+#'   \url{https://pubsonline.informs.org/doi/10.1287/mnsc.2022.4563}.
 #' @references He, J., Huang, J., Li, F., and Zhou, G. (2023).
 #'   Shrinking Factor Dimension: A Reduced-Rank Approach.
 #'   \emph{Management Science}, 69(9).
-#'   \doi{10.1287/mnsc.2022.4428}
+#'   \doi{10.1287/mnsc.2022.4563}
 #' @keywords datasets
 #' @examples
 #' head(he2023_ff48ew[, 1:5])
@@ -139,11 +139,11 @@
 #'   \item{...}{Portfolios p003 through p202 (percent).}
 #' }
 #' @source He, Huang, Li, Zhou (2023) replication package,
-#'   \url{https://pubsonline.informs.org/doi/10.1287/mnsc.2022.4428}.
+#'   \url{https://pubsonline.informs.org/doi/10.1287/mnsc.2022.4563}.
 #' @references He, J., Huang, J., Li, F., and Zhou, G. (2023).
 #'   Shrinking Factor Dimension: A Reduced-Rank Approach.
 #'   \emph{Management Science}, 69(9).
-#'   \doi{10.1287/mnsc.2022.4428}
+#'   \doi{10.1287/mnsc.2022.4563}
 #' @keywords datasets
 #' @examples
 #' head(he2023_dacheng202[, 1:5])
@@ -173,11 +173,11 @@
 #'   \code{he2023_factors}. To extract the matching RF series use
 #'   \code{he2023_ff5$RF[127:642]}.
 #' @source He, Huang, Li, Zhou (2023) replication package,
-#'   \url{https://pubsonline.informs.org/doi/10.1287/mnsc.2022.4428}.
+#'   \url{https://pubsonline.informs.org/doi/10.1287/mnsc.2022.4563}.
 #' @references He, J., Huang, J., Li, F., and Zhou, G. (2023).
 #'   Shrinking Factor Dimension: A Reduced-Rank Approach.
 #'   \emph{Management Science}, 69(9).
-#'   \doi{10.1287/mnsc.2022.4428}
+#'   \doi{10.1287/mnsc.2022.4563}
 #' @keywords datasets
 #' @examples
 #' head(he2023_ff5)

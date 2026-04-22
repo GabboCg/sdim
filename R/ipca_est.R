@@ -10,9 +10,8 @@
 #'   (default 1e-6).
 #' @param factor_mean Character scalar specifying how the factor mean is
 #'   modelled. One of \code{"zero"} (default, no mean adjustment),
-#'   \code{"constant"} (time-series average), \code{"VAR1"} (VAR(1) with
-#'   intercept), \code{"macro"} (regression on macro predictors), or
-#'   \code{"forecombo"} (OLS combination of VAR1 + macro).
+#'   \code{"constant"} (time-series average), or \code{"VAR1"} (VAR(1) with
+#'   intercept).
 #'
 #' @return An object of class \code{"sdim_fit"} with fields:
 #'   \code{factors} (T x K), \code{lambda} (L x K characteristic loadings,
