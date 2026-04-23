@@ -48,6 +48,8 @@ Utilities for out-of-sample macroeconomic forecasting exercises.
 
 Bundled datasets for replication and examples.
 
+- [`grunfeld`](https://gabbocg.github.io/sdim/reference/grunfeld.md) :
+  Grunfeld (1958) investment dataset
 - [`he2023_dacheng202`](https://gabbocg.github.io/sdim/reference/he2023_dacheng202.md)
   : Dacheng 202-portfolio value-weighted returns from He, Huang, Li,
   Zhou (2023)

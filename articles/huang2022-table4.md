@@ -4,7 +4,7 @@ This vignette replicates the IP growth results from Table 4 of Huang,
 Jiang, Li, Tong, and Zhou (2022), “Scaled PCA: A New Approach to
 Dimension Reduction,” *Management Science*, 68(3).
 
-The table reports out-of-sample $R_{OS}^{2}$ (%) of forecasting 1-month
+The table reports out-of-sample \\R^2\_{OS}\\ (%) of forecasting 1-month
 ahead IP growth using PCA and sPCA factors extracted from 123 FRED-MD
 macro variables. The benchmark is an AR model with SIC-selected lag
 order.
@@ -42,7 +42,7 @@ The out-of-sample exercise uses an expanding window:
   factors.
 
 For sPCA, the scaling regression uses the predictive relationship
-$y_{t + 1}\ X_{i,t}$, and absolute slopes are winsorized at the 90th
+\\y\_{t+1} ~ X\_{i,t}\\, and absolute slopes are winsorized at the 90th
 percentile. The
 [`spca_est()`](https://gabbocg.github.io/sdim/reference/spca_est.md)
 function supports this directly: when `length(target) < nrow(X)`, the
@@ -191,8 +191,8 @@ Running the code above produces:
       4  7.99 11.97
       5  7.88 13.17
 
-With 5 factors, PCA achieves $R_{OS}^{2}$ = **7.88%** and sPCA achieves
-$R_{O}^{2}S$ = **13.17%** — both matching the paper exactly. The sPCA
+With 5 factors, PCA achieves \\R^2\_{OS}\\ = **7.88%** and sPCA achieves
+\\R^2_OS\\ = **13.17%** — both matching the paper exactly. The sPCA
 consistently outperforms PCA across all factor counts, confirming that
 scaling predictors by their target-predictive slopes concentrates
 forecasting-relevant information into the first few factors.
@@ -201,7 +201,7 @@ forecasting-relevant information into the first few factors.
 
 1.  **Predictive alignment**: passing a shorter `target` (T-1 elements)
     with the full `X` (T rows) ensures the scaling regression uses the
-    predictive relationship $y_{t + 1}\ X_{i,t}$ while factors are
+    predictive relationship \\y\_{t+1} ~ X\_{i,t}\\ while factors are
     extracted from the full training window.
 
 2.  **Winsorization**: `winsorize = TRUE` with `winsor_probs = c(0, 90)`
@@ -216,5 +216,5 @@ forecasting-relevant information into the first few factors.
 
 Huang, D., Jiang, F., Li, K., Tong, G., and Zhou, G. (2022). Scaled PCA:
 A New Approach to Dimension Reduction. *Management Science*, 68(3),
-1678–1695.
-<doi:%5B10.1287/mnsc.2021.4020>\](<https://doi.org/10.1287/mnsc.2021.4020>)
+1678–1695. DOI:
+[10.1287/mnsc.2021.4020](https://doi.org/10.1287/mnsc.2021.4020)

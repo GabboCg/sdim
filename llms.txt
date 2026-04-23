@@ -217,6 +217,8 @@ Utilities for out-of-sample macroeconomic forecasting exercises.
 
 Bundled datasets for replication and examples.
 
+- [`grunfeld`](https://gabbocg.github.io/sdim/reference/grunfeld.md) :
+  Grunfeld (1958) investment dataset
 - [`he2023_dacheng202`](https://gabbocg.github.io/sdim/reference/he2023_dacheng202.md)
   : Dacheng 202-portfolio value-weighted returns from He, Huang, Li,
   Zhou (2023)
@@ -243,6 +245,11 @@ Bundled datasets for replication and examples.
   : FRED-MD macro predictors from Huang, Jiang, Li, Tong, Zhou (2022)
 
 # Articles
+
+### IPCA
+
+- [IPCA with the Grunfeld
+  dataset](https://gabbocg.github.io/sdim/articles/ipca-grunfeld.md):
 
 ### Replications
 

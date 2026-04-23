@@ -11,7 +11,13 @@
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
-<script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- mathjax math --><script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script><script>
+  window.MathJax = {
+    chtml: {
+      fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
+    }
+  };
+</script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
@@ -39,7 +45,8 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/he2023-table3.html">Replicating He et al. (2023)</a></li>
+<li><a class="dropdown-item" href="../articles/ipca-grunfeld.html">IPCA with the Grunfeld dataset</a></li>
+    <li><a class="dropdown-item" href="../articles/he2023-table3.html">Replicating He et al. (2023)</a></li>
     <li><a class="dropdown-item" href="../articles/huang2022-table4.html">Replicating Huang et al. (2022)</a></li>
   </ul>
 </li>
@@ -227,6 +234,9 @@ factor loadings:</p>
 <p>The package ships with datasets for replication:</p>
 <ul>
 <li>
+<strong><code>grunfeld</code></strong>: Grunfeld (1958) investment
+panel (11 firms, 20 years) — used for IPCA validation.</li>
+<li>
 <strong><code>he2023_*</code></strong>: Seven datasets from He et
 al. (2023) — factor proxies and portfolio returns.</li>
 <li>
@@ -236,9 +246,9 @@ transformed FRED-MD predictors from Huang et al. (2022).</li>
 <strong><code>huang2022_ip</code></strong>: IP growth target for the
 Huang et al. (2022) out-of-sample exercise.</li>
 </ul>
-<p>See <code><a href="../articles/he2023-table3.html">vignette("he2023-table3")</a></code> and
-<code><a href="../articles/huang2022-table4.html">vignette("huang2022-table4")</a></code> for full replication
-examples.</p>
+<p>See <code><a href="../articles/ipca-grunfeld.html">vignette("ipca-grunfeld")</a></code>,
+<code><a href="../articles/he2023-table3.html">vignette("he2023-table3")</a></code>, and
+<code><a href="../articles/huang2022-table4.html">vignette("huang2022-table4")</a></code> for full examples.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
