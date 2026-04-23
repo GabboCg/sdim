@@ -58,16 +58,17 @@ years <- sort(unique(grunfeld$year))
 N  <- length(firms)
 TT <- length(years)
 
-ret <- matrix(NA_real_, TT, N,
-              dimnames = list(years, firms))
+ret <- matrix(NA_real_, TT, N, dimnames = list(years, firms))
 Z   <- array(NA_real_, dim = c(TT, N, 2),
              dimnames = list(years, firms, c("value", "capital")))
 
 for (i in seq_along(firms)) {
+  
   idx <- grunfeld$firm == firms[i]
   ret[, i]  <- grunfeld$invest[idx]
   Z[, i, 1] <- grunfeld$value[idx]
   Z[, i, 2] <- grunfeld$capital[idx]
+  
 }
 
 cat("ret:", nrow(ret), "x", ncol(ret), "\n")
