@@ -87,14 +87,14 @@
 <p>Instrumented PCA extracts latent factors from panel data where
 asset-specific characteristics serve as instruments. The model is</p>
 <p><span class="math display">\[r_{i,t} = \mathbf{z}_{i,t}^\top
-\boldsymbol{\Gamma} \mathbf{f}_t + \varepsilon_{i,t}\]</span></p>
+\mathbf{\Gamma} \mathbf{f}_t + \varepsilon_{i,t}\]</span></p>
 <p>where <span class="math inline">\(r_{i,t}\)</span> is the return
 (here, investment) of asset <span class="math inline">\(i\)</span> at
-time <span class="math inline">\(t\)</span>, <span class="math inline">\(\mathbf{z}_{i,t}\)</span> is an <span class="math inline">\(L\)</span>-vector of characteristics, <span class="math inline">\(\boldsymbol{\Gamma}\)</span> is the <span class="math inline">\(L \times K\)</span> matrix of characteristic
+time <span class="math inline">\(t\)</span>, <span class="math inline">\(\mathbf{z}_{i,t}\)</span> is an <span class="math inline">\(L\)</span>-vector of characteristics, <span class="math inline">\(\mathbf{\Gamma}\)</span> is the <span class="math inline">\(L \times K\)</span> matrix of characteristic
 loadings, and <span class="math inline">\(\mathbf{f}_t\)</span> is the
 <span class="math inline">\(K\)</span>-vector of latent factors.</p>
-<p>Estimation alternates between solving for <span class="math inline">\(\mathbf{f}_t\)</span> given <span class="math inline">\(\boldsymbol{\Gamma}\)</span> and updating <span class="math inline">\(\boldsymbol{\Gamma}\)</span> given <span class="math inline">\(\mathbf{f}_t\)</span> (ALS), with an SVD
-normalization step to ensure <span class="math inline">\(\boldsymbol{\Gamma}^\top \boldsymbol{\Gamma} =
+<p>Estimation alternates between solving for <span class="math inline">\(\mathbf{f}_t\)</span> given <span class="math inline">\(\mathbf{\Gamma}\)</span> and updating <span class="math inline">\(\mathbf{\Gamma}\)</span> given <span class="math inline">\(\mathbf{f}_t\)</span> (ALS), with an SVD
+normalization step to ensure <span class="math inline">\(\mathbf{\Gamma}^\top \mathbf{\Gamma} =
 \mathbf{I}_K\)</span>.</p>
 </div>
 <div class="section level2">
@@ -171,7 +171,7 @@ characteristics are market value (<code>value</code>) and capital stock
 <span><span class="co">#&gt;                     F1</span></span>
 <span><span class="co">#&gt; Eigenvalue       0.019</span></span>
 <span><span class="co">#&gt; Var. expl. (%) 100.000</span></span></code></pre></div>
-<p>The returned object contains the characteristic loadings (<span class="math inline">\(\boldsymbol{\Gamma}\)</span>, stored as
+<p>The returned object contains the characteristic loadings (<span class="math inline">\(\mathbf{\Gamma}\)</span>, stored as
 <code>lambda</code>) and the estimated factors:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Gamma: how each characteristic maps to the factor</span></span>
@@ -258,8 +258,8 @@ their own factor dimension):</p>
 <span><span class="co">#&gt; Eigenvalues</span></span>
 <span><span class="co">#&gt; ---------------------------------------- </span></span>
 <span><span class="co">#&gt;                     F1      F2</span></span>
-<span><span class="co">#&gt; Eigenvalue      0.0073  0.0197</span></span>
-<span><span class="co">#&gt; Var. expl. (%) 27.0200 72.9800</span></span></code></pre></div>
+<span><span class="co">#&gt; Eigenvalue      0.0197  0.0073</span></span>
+<span><span class="co">#&gt; Var. expl. (%) 72.9800 27.0200</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

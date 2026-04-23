@@ -10,18 +10,18 @@ package (Kelly, Pruitt, and Su, 2019).
 Instrumented PCA extracts latent factors from panel data where
 asset-specific characteristics serve as instruments. The model is
 
-\\r\_{i,t} = \mathbf{z}\_{i,t}^\top \boldsymbol{\Gamma} \mathbf{f}\_t +
+\\r\_{i,t} = \mathbf{z}\_{i,t}^\top \mathbf{\Gamma} \mathbf{f}\_t +
 \varepsilon\_{i,t}\\
 
 where \\r\_{i,t}\\ is the return (here, investment) of asset \\i\\ at
 time \\t\\, \\\mathbf{z}\_{i,t}\\ is an \\L\\-vector of characteristics,
-\\\boldsymbol{\Gamma}\\ is the \\L \times K\\ matrix of characteristic
+\\\mathbf{\Gamma}\\ is the \\L \times K\\ matrix of characteristic
 loadings, and \\\mathbf{f}\_t\\ is the \\K\\-vector of latent factors.
 
 Estimation alternates between solving for \\\mathbf{f}\_t\\ given
-\\\boldsymbol{\Gamma}\\ and updating \\\boldsymbol{\Gamma}\\ given
+\\\mathbf{\Gamma}\\ and updating \\\mathbf{\Gamma}\\ given
 \\\mathbf{f}\_t\\ (ALS), with an SVD normalization step to ensure
-\\\boldsymbol{\Gamma}^\top \boldsymbol{\Gamma} = \mathbf{I}\_K\\.
+\\\mathbf{\Gamma}^\top \mathbf{\Gamma} = \mathbf{I}\_K\\.
 
 ## Data preparation
 
@@ -103,7 +103,7 @@ summary(fit)
 ```
 
 The returned object contains the characteristic loadings
-(\\\boldsymbol{\Gamma}\\, stored as `lambda`) and the estimated factors:
+(\\\mathbf{\Gamma}\\, stored as `lambda`) and the estimated factors:
 
 ``` r
 # Gamma: how each characteristic maps to the factor
@@ -195,8 +195,8 @@ summary(fit2)
 #> Eigenvalues
 #> ---------------------------------------- 
 #>                     F1      F2
-#> Eigenvalue      0.0073  0.0197
-#> Var. expl. (%) 27.0200 72.9800
+#> Eigenvalue      0.0197  0.0073
+#> Var. expl. (%) 72.9800 27.0200
 ```
 
 ## References

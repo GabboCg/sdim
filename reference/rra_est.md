@@ -38,7 +38,7 @@ An object of class `"sdim_fit"`.
 ## References
 
 He, J., Huang, J., Li, F., and Zhou, G. (2023). Shrinking Factor
-Dimension: A Reduced-Rank Approach. \*Management Science\*, 69(9).
+Dimension: A Reduced-Rank Approach. *Management Science*, 69(9).
 [doi:10.1287/mnsc.2022.4563](https://doi.org/10.1287/mnsc.2022.4563)
 
 ## Examples
