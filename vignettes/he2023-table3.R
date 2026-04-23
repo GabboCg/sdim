@@ -1,30 +1,10 @@
----
-title: "Replicating He et al. (2023)"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Replicating He et al. (2023)}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
-
-```{r, include = FALSE}
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-```
 
-This vignette replicates Table 3 from He, Huang, Li, and Zhou (2023),
-"Shrinking Factor Dimension: A Reduced-Rank Approach,"
-_Management Science_, 69(9).
-
-The table reports the total adjusted $R^2$ (%) of pricing 48 Fama-French
-value-weighted industry portfolios using factors extracted by four
-methods: the Fama-French factors directly (FF), PCA, PLS, and RRA.
-
-## Setup
-
-```{r}
+## -----------------------------------------------------------------------------
 library(sdim)
 
 # Align dates: he2023_factors ends 12 months earlier than portfolio datasets
@@ -33,11 +13,8 @@ G <- he2023_factors[1:516, -1] / 100
 
 # First 6 columns are Fama-French 5 + momentum
 f5 <- G[, 1:6]
-```
 
-## Replication
-
-```{r}
+## -----------------------------------------------------------------------------
 nfact   <- c(1, 3, 5, 6, 10)
 methods <- c("FF", "PCA", "PLS", "RRA")
 
@@ -63,22 +40,7 @@ for (j in seq_along(nfact)) {
   total_r2["RRA", j] <- eval_factors(he2023_ff48, fit_rra$factors)["TotalR2"]
 
 }
-```
 
-## Results
-
-```{r}
+## -----------------------------------------------------------------------------
 round(total_r2, 2)
-```
 
-The RRA consistently achieves the highest total $R^2$ across all factor
-counts, confirming the main finding of He et al. (2023): the
-reduced-rank approach effectively shrinks factor dimension while
-retaining pricing information.
-
-## References
-
-He, J., Huang, J., Li, F., and Zhou, G. (2023).
-Shrinking Factor Dimension: A Reduced-Rank Approach.
-_Management Science_, 69(9).
-DOI: [10.1287/mnsc.2022.4563](https://doi.org/10.1287/mnsc.2022.4563)

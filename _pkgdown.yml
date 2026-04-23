@@ -5,6 +5,7 @@ template:
   bslib:
     primary: "#1a9e78"
   light-switch: true
+  math-rendering: mathjax
 
 navbar:
   structure:
@@ -14,12 +15,17 @@ navbar:
     articles:
       text: Articles
       menu:
+        - text: "IPCA with the Grunfeld dataset"
+          href: articles/ipca-grunfeld.html
         - text: "Replicating He et al. (2023)"
           href: articles/he2023-table3.html
         - text: "Replicating Huang et al. (2022)"
           href: articles/huang2022-table4.html
 
 articles:
+  - title: IPCA
+    contents:
+      - ipca-grunfeld
   - title: Replications
     contents:
       - he2023-table3
@@ -57,5 +63,6 @@ reference:
   - title: Datasets
     desc: Bundled datasets for replication and examples.
     contents:
+      - grunfeld
       - starts_with("he2023")
       - starts_with("huang2022")

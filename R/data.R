@@ -1,3 +1,49 @@
+#' Grunfeld (1958) investment dataset
+#'
+#' Panel data on gross investment for 11 US firms over 20 years (1935--1954),
+#' originally from Grunfeld (1958). This is a classic panel dataset used for
+#' validating the IPCA estimator against the Python \code{ipca} package
+#' (Kelly, Pruitt, Su, 2019).
+#'
+#' @format A data.frame with 220 rows and 5 variables:
+#' \describe{
+#'   \item{firm}{Character; firm name (11 unique firms).}
+#'   \item{year}{Integer; year of observation (1935--1954).}
+#'   \item{invest}{Numeric; gross investment (millions of dollars).}
+#'   \item{value}{Numeric; market value of the firm (millions of dollars).}
+#'   \item{capital}{Numeric; stock of plant and equipment (millions of dollars).}
+#' }
+#' @source Grunfeld, Y. (1958). The Determinants of Corporate Investment.
+#'   Ph.D. thesis, Department of Economics, University of Chicago.
+#'   Loaded from the \code{statsmodels} Python package
+#'   (\code{statsmodels.datasets.grunfeld}).
+#' @references Kelly, B. T., Pruitt, S., and Su, Y. (2019).
+#'   Characteristics are Covariances: A Unified Model of Risk and Return.
+#'   \emph{Journal of Financial Economics}, 134(3), 501--524.
+#'   \doi{10.1016/j.jfineco.2019.05.001}
+#' @keywords datasets
+#' @examples
+#' head(grunfeld)
+#'
+#' # Reshape for ipca_est(): T x N matrix and T x N x L array
+#' firms <- sort(unique(grunfeld$firm))
+#' years <- sort(unique(grunfeld$year))
+#' N <- length(firms)
+#' TT <- length(years)
+#'
+#' ret <- matrix(NA, TT, N)
+#' Z   <- array(NA, dim = c(TT, N, 2))
+#' for (i in seq_along(firms)) {
+#'   idx <- grunfeld$firm == firms[i]
+#'   ret[, i]  <- grunfeld$invest[idx]
+#'   Z[, i, 1] <- grunfeld$value[idx]
+#'   Z[, i, 2] <- grunfeld$capital[idx]
+#' }
+#'
+#' fit <- ipca_est(ret, Z, nfac = 1)
+#' print(fit)
+"grunfeld"
+
 #' Factor proxies from He, Huang, Li, Zhou (2023)
 #'
 #' Monthly returns on 70 factor proxies from the replication package of He,

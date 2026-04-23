@@ -1,0 +1,148 @@
+---
+title: "IPCA with the Grunfeld dataset"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{IPCA with the Grunfeld dataset}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This vignette demonstrates the IPCA estimator using the Grunfeld (1958)
+investment dataset, a classic panel of 11 US firms observed over 20 years
+(1935--1954). Results are validated against the Python `ipca` package
+(Kelly, Pruitt, and Su, 2019).
+
+## The IPCA model
+
+Instrumented PCA extracts latent factors from panel data where
+asset-specific characteristics serve as instruments. The model is
+
+$$r_{i,t} = \mathbf{z}_{i,t}^\top \boldsymbol{\Gamma} \mathbf{f}_t + \varepsilon_{i,t}$$
+
+where $r_{i,t}$ is the return (here, investment) of asset $i$ at time $t$,
+$\mathbf{z}_{i,t}$ is an $L$-vector of characteristics,
+$\boldsymbol{\Gamma}$ is the $L \times K$ matrix of characteristic
+loadings, and $\mathbf{f}_t$ is the $K$-vector of latent factors.
+
+Estimation alternates between solving for $\mathbf{f}_t$ given
+$\boldsymbol{\Gamma}$ and updating $\boldsymbol{\Gamma}$ given $\mathbf{f}_t$
+(ALS), with an SVD normalization step to ensure
+$\boldsymbol{\Gamma}^\top \boldsymbol{\Gamma} = \mathbf{I}_K$.
+
+## Data preparation
+
+The Grunfeld dataset ships with **sdim**. The dependent variable is gross
+investment (`invest`) and the two characteristics are market value (`value`)
+and capital stock (`capital`).
+
+```{r}
+library(sdim)
+
+data(grunfeld)
+str(grunfeld)
+```
+
+`ipca_est()` expects a $T \times N$ return matrix and a $T \times N \times L$
+characteristics array:
+
+```{r}
+firms <- sort(unique(grunfeld$firm))
+years <- sort(unique(grunfeld$year))
+N  <- length(firms)
+TT <- length(years)
+
+ret <- matrix(NA_real_, TT, N,
+              dimnames = list(years, firms))
+Z   <- array(NA_real_, dim = c(TT, N, 2),
+             dimnames = list(years, firms, c("value", "capital")))
+
+for (i in seq_along(firms)) {
+  idx <- grunfeld$firm == firms[i]
+  ret[, i]  <- grunfeld$invest[idx]
+  Z[, i, 1] <- grunfeld$value[idx]
+  Z[, i, 2] <- grunfeld$capital[idx]
+}
+
+cat("ret:", nrow(ret), "x", ncol(ret), "\n")
+cat("Z:  ", paste(dim(Z), collapse = " x "), "\n")
+```
+
+## Fitting IPCA
+
+Extract one latent factor:
+
+```{r}
+fit <- ipca_est(ret, Z, nfac = 1)
+print(fit)
+summary(fit)
+```
+
+The returned object contains the characteristic loadings
+($\boldsymbol{\Gamma}$, stored as `lambda`) and the estimated factors:
+
+```{r}
+# Gamma: how each characteristic maps to the factor
+fit$lambda
+
+# Factors over time
+data.frame(year = years, factor = fit$factors[, 1])
+```
+
+## Validation against the Python `ipca` package
+
+The Python `ipca` package implements the same ALS algorithm using the
+Grunfeld dataset as its example. With `n_factors = 1` and no intercept,
+the Python output is:
+
+```{r}
+py_gamma   <- c(0.99166014, 0.12888046)
+py_factors <- c(
+  0.1031968381, 0.0884489515, 0.0838496628, 0.0845069923, 0.0722523449,
+  0.0995068155, 0.1228840058, 0.1422623752, 0.1197532025, 0.1179724004,
+  0.1087561863, 0.1357521189, 0.1579348267, 0.1660545375, 0.1484923276,
+  0.1586634303, 0.1596007400, 0.1759379247, 0.1921695585, 0.2111065868
+)
+```
+
+Compare loadings and factors (sign-aligned):
+
+```{r}
+r_gamma <- as.numeric(fit$lambda)
+r_factors <- as.numeric(fit$factors)
+
+# Sign-align if needed
+if (cor(r_gamma, py_gamma) < 0) {
+  r_gamma   <- -r_gamma
+  r_factors <- -r_factors
+}
+
+cat("Gamma max |diff|:  ", sprintf("%.2e", max(abs(r_gamma - py_gamma))), "\n")
+cat("Factor max |diff|: ", sprintf("%.2e", max(abs(r_factors - py_factors))), "\n")
+cat("Factor correlation:", sprintf("%.10f", cor(r_factors, py_factors)), "\n")
+```
+
+## Multiple factors
+
+IPCA can also extract more than one factor. With $K = 2$ (both
+characteristics contribute their own factor dimension):
+
+```{r}
+fit2 <- ipca_est(ret, Z, nfac = 2)
+summary(fit2)
+```
+
+## References
+
+Grunfeld, Y. (1958). The Determinants of Corporate Investment. Ph.D. thesis,
+Department of Economics, University of Chicago.
+
+Kelly, B. T., Pruitt, S., and Su, Y. (2019). Characteristics are Covariances:
+A Unified Model of Risk and Return. *Journal of Financial Economics*, 134(3),
+501--524. DOI: [10.1016/j.jfineco.2019.05.001](https://doi.org/10.1016/j.jfineco.2019.05.001)

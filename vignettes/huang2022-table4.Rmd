@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 This vignette replicates the IP growth results from Table 4 of Huang,
 Jiang, Li, Tong, and Zhou (2022), "Scaled PCA: A New Approach to
-Dimension Reduction," *Management Science*, 68(3).
+Dimension Reduction," _Management Science_, 68(3).
 
 The table reports out-of-sample $R^2_{OS}$ (%) of forecasting 1-month ahead
 IP growth using PCA and sPCA factors extracted from 123 FRED-MD macro
@@ -219,7 +219,7 @@ forecasting-relevant information into the first few factors.
 
 ## References
 
-Huang, D., Jiang, F., Li, K., Tong, G., and Zhou, G. (2022). Scaled
-PCA: A New Approach to Dimension Reduction. *Management Science*, 68(3),
-1678--1695.
-doi:[10.1287/mnsc.2021.4020](https://doi.org/10.1287/mnsc.2021.4020)
+Huang, D., Jiang, F., Li, K., Tong, G., and Zhou, G. (2022).
+Scaled PCA: A New Approach to Dimension Reduction.
+_Management Science_, 68(3), 1678--1695.
+DOI: [10.1287/mnsc.2021.4020](https://doi.org/10.1287/mnsc.2021.4020)

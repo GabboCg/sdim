@@ -113,6 +113,8 @@ eval_factors(ret = ret, factors = fit_rra$factors)
 
 The package ships with datasets for replication:
 
+- **`grunfeld`**: Grunfeld (1958) investment panel (11 firms, 20 years) —
+  used for IPCA validation.
 - **`he2023_*`**: Seven datasets from He et al. (2023) — factor proxies
   and portfolio returns.
 - **`huang2022_macro`**: 720 × 123 matrix of transformed FRED-MD
@@ -120,5 +122,5 @@ The package ships with datasets for replication:
 - **`huang2022_ip`**: IP growth target for the Huang et al. (2022)
   out-of-sample exercise.
 
-See `vignette("he2023-table3")` and `vignette("huang2022-table4")` for
-full replication examples.
+See `vignette("ipca-grunfeld")`, `vignette("he2023-table3")`, and
+`vignette("huang2022-table4")` for full examples.
