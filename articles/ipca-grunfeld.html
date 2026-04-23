@@ -225,8 +225,10 @@ algorithm using the Grunfeld dataset as its example. With
 <span></span>
 <span><span class="co"># Sign-align if needed</span></span>
 <span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="va">r_gamma</span>, <span class="va">py_gamma</span><span class="op">)</span> <span class="op">&lt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
 <span>  <span class="va">r_gamma</span>   <span class="op">&lt;-</span> <span class="op">-</span><span class="va">r_gamma</span></span>
 <span>  <span class="va">r_factors</span> <span class="op">&lt;-</span> <span class="op">-</span><span class="va">r_factors</span></span>
+<span>  </span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Gamma max |diff|:  "</span>, <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"%.2e"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">r_gamma</span> <span class="op">-</span> <span class="va">py_gamma</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span></span>
@@ -258,8 +260,8 @@ their own factor dimension):</p>
 <span><span class="co">#&gt; Eigenvalues</span></span>
 <span><span class="co">#&gt; ---------------------------------------- </span></span>
 <span><span class="co">#&gt;                     F1      F2</span></span>
-<span><span class="co">#&gt; Eigenvalue      0.0197  0.0073</span></span>
-<span><span class="co">#&gt; Var. expl. (%) 72.9800 27.0200</span></span></code></pre></div>
+<span><span class="co">#&gt; Eigenvalue      0.0073  0.0197</span></span>
+<span><span class="co">#&gt; Var. expl. (%) 27.0200 72.9800</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

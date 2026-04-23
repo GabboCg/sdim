@@ -161,8 +161,10 @@ r_factors <- as.numeric(fit$factors)
 
 # Sign-align if needed
 if (cor(r_gamma, py_gamma) < 0) {
+
   r_gamma   <- -r_gamma
   r_factors <- -r_factors
+  
 }
 
 cat("Gamma max |diff|:  ", sprintf("%.2e", max(abs(r_gamma - py_gamma))), "\n")
@@ -195,8 +197,8 @@ summary(fit2)
 #> Eigenvalues
 #> ---------------------------------------- 
 #>                     F1      F2
-#> Eigenvalue      0.0197  0.0073
-#> Var. expl. (%) 72.9800 27.0200
+#> Eigenvalue      0.0073  0.0197
+#> Var. expl. (%) 27.0200 72.9800
 ```
 
 ## References

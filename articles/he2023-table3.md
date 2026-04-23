@@ -37,7 +37,9 @@ for (j in seq_along(nfact)) {
   k <- nfact[j]
 
   if (k <= 6) {
+
     total_r2["FF", j] <- eval_factors(he2023_ff48, f5[, 1:k])["TotalR2"]
+    
   }
 
   fit_pca <- pca_est(target = he2023_ff48, X = G, nfac = k)
