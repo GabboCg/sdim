@@ -24,17 +24,17 @@ investment dataset, a classic panel of 11 US firms observed over 20 years
 Instrumented PCA extracts latent factors from panel data where
 asset-specific characteristics serve as instruments. The model is
 
-$$r_{i,t} = \mathbf{z}_{i,t}^\top \boldsymbol{\Gamma} \mathbf{f}_t + \varepsilon_{i,t}$$
+$$r_{i,t} = \mathbf{z}_{i,t}^\top \mathbf{\Gamma} \mathbf{f}_t + \varepsilon_{i,t}$$
 
 where $r_{i,t}$ is the return (here, investment) of asset $i$ at time $t$,
 $\mathbf{z}_{i,t}$ is an $L$-vector of characteristics,
-$\boldsymbol{\Gamma}$ is the $L \times K$ matrix of characteristic
+$\mathbf{\Gamma}$ is the $L \times K$ matrix of characteristic
 loadings, and $\mathbf{f}_t$ is the $K$-vector of latent factors.
 
 Estimation alternates between solving for $\mathbf{f}_t$ given
-$\boldsymbol{\Gamma}$ and updating $\boldsymbol{\Gamma}$ given $\mathbf{f}_t$
+$\mathbf{\Gamma}$ and updating $\mathbf{\Gamma}$ given $\mathbf{f}_t$
 (ALS), with an SVD normalization step to ensure
-$\boldsymbol{\Gamma}^\top \boldsymbol{\Gamma} = \mathbf{I}_K$.
+$\mathbf{\Gamma}^\top \mathbf{\Gamma} = \mathbf{I}_K$.
 
 ## Data preparation
 
@@ -86,7 +86,7 @@ summary(fit)
 ```
 
 The returned object contains the characteristic loadings
-($\boldsymbol{\Gamma}$, stored as `lambda`) and the estimated factors:
+($\mathbf{\Gamma}$, stored as `lambda`) and the estimated factors:
 
 ```{r}
 # Gamma: how each characteristic maps to the factor
@@ -145,5 +145,5 @@ Grunfeld, Y. (1958). The Determinants of Corporate Investment. Ph.D. thesis,
 Department of Economics, University of Chicago.
 
 Kelly, B. T., Pruitt, S., and Su, Y. (2019). Characteristics are Covariances:
-A Unified Model of Risk and Return. *Journal of Financial Economics*, 134(3),
+A Unified Model of Risk and Return. _Journal of Financial Economics_, 134(3),
 501--524. DOI: [10.1016/j.jfineco.2019.05.001](https://doi.org/10.1016/j.jfineco.2019.05.001)

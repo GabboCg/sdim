@@ -41,7 +41,7 @@
 #'
 #' @references Huang, D., Jiang, F., Li, K., Tong, G., and Zhou, G. (2022).
 #'   Scaled PCA: A New Approach to Dimension Reduction.
-#'   *Management Science*, 68(3), 1678--1695.
+#'   \emph{Management Science}, 68(3), 1678--1695.
 #'   \doi{10.1287/mnsc.2021.4020}
 #'
 #' @examples

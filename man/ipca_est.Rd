@@ -48,6 +48,6 @@ print(fit)
 \references{
 Kelly, B. T., Pruitt, S., and Su, Y. (2019).
   Characteristics are Covariances: A Unified Model of Risk and Return.
-  *Journal of Financial Economics*, 134(3).
+  \emph{Journal of Financial Economics}, 134(3), 501--524.
   \doi{10.1016/j.jfineco.2019.05.001}
 }
