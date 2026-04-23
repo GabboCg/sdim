@@ -120,8 +120,10 @@ r_factors <- as.numeric(fit$factors)
 
 # Sign-align if needed
 if (cor(r_gamma, py_gamma) < 0) {
+
   r_gamma   <- -r_gamma
   r_factors <- -r_factors
+  
 }
 
 cat("Gamma max |diff|:  ", sprintf("%.2e", max(abs(r_gamma - py_gamma))), "\n")
