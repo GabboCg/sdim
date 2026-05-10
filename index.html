@@ -19,8 +19,7 @@
   };
 </script><script src="lightswitch.js"></script><script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
-<link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="An R Package for Supervised Dimension Reduction">
 <meta name="description" content="Implements five factor extraction methods for asset pricing and macroeconomic forecasting: principal component analysis (PCA), partial least squares (PLS), scaled PCA (sPCA) of Huang, Jiang, Li, Tong, and Zhou (2022) &lt;doi:10.1287/mnsc.2021.4020&gt;, the reduced-rank approach (RRA) of He, Huang, Li, and Zhou (2023) &lt;doi:10.1287/mnsc.2022.4563&gt;, and Instrumented PCA (IPCA) of Kelly, Pruitt, and Su (2019) &lt;doi:10.1016/j.jfineco.2019.05.001&gt;.">
@@ -69,16 +68,31 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header">
-<img src="logo.png" class="logo" alt=""><h1 id="sdim-">sdim 
-<a class="anchor" aria-label="anchor" href="#sdim-"></a>
+<img src="logo.png" class="logo" alt=""><h1 id="sdim-supervised-dimension-reduction-for-asset-pricing-and-macro-forecasting-">sdim: Supervised Dimension Reduction for Asset Pricing and Macro Forecasting <a class="anchor" aria-label="anchor" href="#sdim-supervised-dimension-reduction-for-asset-pricing-and-macro-forecasting-"></a>
 </h1>
 </div>
+<p><strong>Author:</strong> <a href="https://github.com/GabboCg" class="external-link">Gabriel Cabrera</a><br><strong>License:</strong> <a href="https://opensource.org/licenses/MIT" class="external-link">MIT</a> + file <a href="LICENSE">LICENSE</a></p>
 <!-- badges: start -->
 
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p><strong>sdim</strong> implements five factor extraction methods for asset pricing and macroeconomic forecasting:</p>
+<p><strong>sdim</strong> implements five factor extraction methods for asset pricing and macroeconomic forecasting. PCA, PLS, and RRA take a multivariate target (T×N returns matrix) and a matrix of factor proxies. sPCA takes a univariate target and scales each proxy by its OLS slope on the target before extracting principal components. IPCA extracts latent factors from panel data using time-varying characteristics as instruments, estimated via alternating least squares (ALS). Performance of extracted factors can be evaluated with <code><a href="reference/eval_factors.html">eval_factors()</a></code>. The package ships with seven <code>he2023_*</code> datasets (factor proxies and portfolio returns) from the He et al. (2023, MS) replication package.</p>
+</div>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Install from GitHub (not yet on CRAN)</span></span>
+<span><span class="co"># install.packages("pak")</span></span>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"GabboCg/sdim"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="methods">Methods<a class="anchor" aria-label="anchor" href="#methods"></a>
+</h2>
+<div class="section level3">
+<h3 id="factor-extraction">Factor Extraction<a class="anchor" aria-label="anchor" href="#factor-extraction"></a>
+</h3>
 <table class="table">
 <colgroup>
 <col width="33%">
@@ -118,16 +132,7 @@
 </tr>
 </tbody>
 </table>
-<p>PCA, PLS, and RRA take a multivariate target (T×N returns matrix) and a matrix of factor proxies. sPCA takes a univariate target and scales each proxy by its OLS slope on the target before extracting principal components. IPCA extracts latent factors from panel data using time-varying characteristics as instruments, estimated via alternating least squares (ALS). Performance of extracted factors can be evaluated with <code><a href="reference/eval_factors.html">eval_factors()</a></code>.</p>
-<p>The package ships with seven <code>he2023_*</code> datasets (factor proxies and portfolio returns) from the He et al. (2023, MS) replication package.</p>
 </div>
-<div class="section level2">
-<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
-</h2>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Install from GitHub (not yet on CRAN)</span></span>
-<span><span class="co"># install.packages("pak")</span></span>
-<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"GabboCg/sdim"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
@@ -252,9 +257,12 @@
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <ul>
-<li><p>He, J., Huang, J., Li, F., and Zhou, G. (2023). “Shrinking Factor Dimension: A Reduced-Rank Approach.” <em>Management Science</em>, 69(9). <a href="https://doi.org/10.1287/mnsc.2022.4563" class="external-link">doi:10.1287/mnsc.2022.4563</a></p></li>
-<li><p>Huang, J., Jiang, J., Li, F., Tong, G., and Zhou, G. (2022). “Scaled PCA: A New Approach to Dimension Reduction.” <em>Management Science</em>, 68(3). <a href="https://doi.org/10.1287/mnsc.2021.4020" class="external-link">doi:10.1287/mnsc.2021.4020</a></p></li>
-<li><p>Kelly, B. T., Pruitt, S., and Su, Y. (2019). “Characteristics are Covariances: A Unified Model of Risk and Return.” <em>Journal of Financial Economics</em>, 134(3). <a href="https://doi.org/10.1016/j.jfineco.2019.05.001" class="external-link">doi:10.1016/j.jfineco.2019.05.001</a></p></li>
+<li>He, J., Huang, J., Li, F., and Zhou, G. (2023). Shrinking Factor Dimension: A Reduced-Rank Approach. <em>Management Science</em>, 69(9). <a href="https://doi.org/10.1287/mnsc.2022.4563" class="external-link">doi:10.1287/mnsc.2022.4563</a>
+</li>
+<li>Huang, J., Jiang, J., Li, F., Tong, G., and Zhou, G. (2022). Scaled PCA: A New Approach to Dimension Reduction. <em>Management Science</em>, 68(3). <a href="https://doi.org/10.1287/mnsc.2021.4020" class="external-link">doi:10.1287/mnsc.2021.4020</a>
+</li>
+<li>Kelly, B. T., Pruitt, S., and Su, Y. (2019). Characteristics are Covariances: A Unified Model of Risk and Return. <em>Journal of Financial Economics</em>, 134(3). <a href="https://doi.org/10.1016/j.jfineco.2019.05.001" class="external-link">doi:10.1016/j.jfineco.2019.05.001</a>
+</li>
 </ul>
 </div>
 </div>
