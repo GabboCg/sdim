@@ -12,6 +12,7 @@ RRA.
 ## Setup
 
 ``` r
+
 library(sdim)
 
 # Align dates: he2023_factors ends 12 months earlier than portfolio datasets
@@ -25,6 +26,7 @@ f5 <- G[, 1:6]
 ## Replication
 
 ``` r
+
 nfact   <- c(1, 3, 5, 6, 10)
 methods <- c("FF", "PCA", "PLS", "RRA")
 
@@ -57,6 +59,7 @@ for (j in seq_along(nfact)) {
 ## Results
 
 ``` r
+
 round(total_r2, 2)
 #>     1 factors 3 factors 5 factors 6 factors 10 factors
 #> FF      51.39     55.57     57.77     58.34         NA

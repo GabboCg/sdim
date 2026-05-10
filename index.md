@@ -5,13 +5,13 @@
 **sdim** implements five factor extraction methods for asset pricing and
 macroeconomic forecasting:
 
-| Function                                                             | Method                             | Reference                      |
-|----------------------------------------------------------------------|------------------------------------|--------------------------------|
-| [`pca_est()`](https://gabbocg.github.io/sdim/reference/pca_est.md)   | Principal Component Analysis (PCA) | He et al. (2023, MS)           |
-| [`pls_est()`](https://gabbocg.github.io/sdim/reference/pls_est.md)   | Partial Least Squares (PLS)        | He et al. (2023, MS)           |
-| [`rra_est()`](https://gabbocg.github.io/sdim/reference/rra_est.md)   | Reduced-Rank Approach (RRA)        | He et al. (2023, MS)           |
-| [`spca_est()`](https://gabbocg.github.io/sdim/reference/spca_est.md) | Scaled PCA (sPCA)                  | Huang et al. (2022, MS)        |
-| [`ipca_est()`](https://gabbocg.github.io/sdim/reference/ipca_est.md) | Instrumented PCA (IPCA)            | Kelly, Pruitt & Su (2019, JFE) |
+| Function | Method | Reference |
+|----|----|----|
+| [`pca_est()`](https://gabbocg.github.io/sdim/reference/pca_est.md) | Principal Component Analysis (PCA) | He et al. (2023, MS) |
+| [`pls_est()`](https://gabbocg.github.io/sdim/reference/pls_est.md) | Partial Least Squares (PLS) | He et al. (2023, MS) |
+| [`rra_est()`](https://gabbocg.github.io/sdim/reference/rra_est.md) | Reduced-Rank Approach (RRA) | He et al. (2023, MS) |
+| [`spca_est()`](https://gabbocg.github.io/sdim/reference/spca_est.md) | Scaled PCA (sPCA) | Huang et al. (2022, MS) |
+| [`ipca_est()`](https://gabbocg.github.io/sdim/reference/ipca_est.md) | Instrumented PCA (IPCA) | Kelly, Pruitt & Su (2019, JFE) |
 
 PCA, PLS, and RRA take a multivariate target (T×N returns matrix) and a
 matrix of factor proxies. sPCA takes a univariate target and scales each
@@ -28,6 +28,7 @@ portfolio returns) from the He et al. (2023, MS) replication package.
 ## Installation
 
 ``` r
+
 # Install from GitHub (not yet on CRAN)
 # install.packages("pak")
 pak::pak("GabboCg/sdim")
@@ -38,6 +39,7 @@ pak::pak("GabboCg/sdim")
 ### Quick start
 
 ``` r
+
 library(sdim)
 
 set.seed(42)
@@ -73,6 +75,7 @@ eval_factors(ret = ret, factors = fit_rra$factors)
 ### IPCA (panel with time-varying characteristics)
 
 ``` r
+
 # Simulate panel
 set.seed(99)
 TT <- 120
@@ -119,6 +122,7 @@ fit_var$var_coef   # K x K VAR(1) coefficient matrix
 ### sPCA (univariate target)
 
 ``` r
+
 y <- rnorm(200) # univariate return series
 
 fit_spca <- spca_est(target = y, X = X, nfac = 3)

@@ -1,4 +1,4 @@
-pandoc: 3.1.11
+pandoc: 3.8.3
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
@@ -6,7 +6,7 @@ articles:
   huang2022-table4: huang2022-table4.html
   ipca-grunfeld: ipca-grunfeld.html
   sdim: sdim.html
-last_built: 2026-04-23T14:06Z
+last_built: 2026-05-10T09:36Z
 urls:
   reference: https://gabbocg.github.io/sdim/reference
   article: https://gabbocg.github.io/sdim/articles

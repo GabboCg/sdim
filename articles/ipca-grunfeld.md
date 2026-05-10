@@ -30,6 +30,7 @@ gross investment (`invest`) and the two characteristics are market value
 (`value`) and capital stock (`capital`).
 
 ``` r
+
 library(sdim)
 
 data(grunfeld)
@@ -47,6 +48,7 @@ expects a \\T \times N\\ return matrix and a \\T \times N \times L\\
 characteristics array:
 
 ``` r
+
 firms <- sort(unique(grunfeld$firm))
 years <- sort(unique(grunfeld$year))
 N  <- length(firms)
@@ -76,6 +78,7 @@ cat("Z:  ", paste(dim(Z), collapse = " x "), "\n")
 Extract one latent factor:
 
 ``` r
+
 fit <- ipca_est(ret, Z, nfac = 1)
 print(fit)
 #> <sdim_fit [ipca]>
@@ -106,6 +109,7 @@ The returned object contains the characteristic loadings
 (\\\mathbf{\Gamma}\\, stored as `lambda`) and the estimated factors:
 
 ``` r
+
 # Gamma: how each characteristic maps to the factor
 fit$lambda
 #>           [,1]
@@ -144,6 +148,7 @@ Grunfeld dataset as its example. With `n_factors = 1` and no intercept,
 the Python output is:
 
 ``` r
+
 py_gamma   <- c(0.99166014, 0.12888046)
 py_factors <- c(
   0.1031968381, 0.0884489515, 0.0838496628, 0.0845069923, 0.0722523449,
@@ -156,6 +161,7 @@ py_factors <- c(
 Compare loadings and factors (sign-aligned):
 
 ``` r
+
 r_gamma <- as.numeric(fit$lambda)
 r_factors <- as.numeric(fit$factors)
 
@@ -181,6 +187,7 @@ IPCA can also extract more than one factor. With \\K = 2\\ (both
 characteristics contribute their own factor dimension):
 
 ``` r
+
 fit2 <- ipca_est(ret, Z, nfac = 2)
 summary(fit2)
 #> Instrumented Principal Components Analysis (IPCA) 

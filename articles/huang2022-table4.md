@@ -19,6 +19,7 @@ The package includes the authors’ original data:
   index).
 
 ``` r
+
 library(sdim)
 
 data(huang2022_macro)
@@ -63,6 +64,7 @@ with [`predict()`](https://rdrr.io/r/stats/predict.html) for factor
 extraction. The loop runs ~420 iterations and takes several minutes.
 
 ``` r
+
 run_oos <- function(y, Z, h = 1, p_max = 1, nfac_max = 5) {
 
   TT <- length(y)

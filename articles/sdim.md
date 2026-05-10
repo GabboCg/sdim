@@ -5,13 +5,13 @@
 **sdim** implements five factor extraction methods for asset pricing and
 macroeconomic forecasting:
 
-| Function                                                             | Method                             | Reference                      |
-|----------------------------------------------------------------------|------------------------------------|--------------------------------|
-| [`pca_est()`](https://gabbocg.github.io/sdim/reference/pca_est.md)   | Principal Component Analysis (PCA) | He et al. (2023, MS)           |
-| [`pls_est()`](https://gabbocg.github.io/sdim/reference/pls_est.md)   | Partial Least Squares (PLS)        | He et al. (2023, MS)           |
-| [`rra_est()`](https://gabbocg.github.io/sdim/reference/rra_est.md)   | Reduced-Rank Approach (RRA)        | He et al. (2023, MS)           |
-| [`spca_est()`](https://gabbocg.github.io/sdim/reference/spca_est.md) | Scaled PCA (sPCA)                  | Huang et al. (2022, MS)        |
-| [`ipca_est()`](https://gabbocg.github.io/sdim/reference/ipca_est.md) | Instrumented PCA (IPCA)            | Kelly, Pruitt & Su (2019, JFE) |
+| Function | Method | Reference |
+|----|----|----|
+| [`pca_est()`](https://gabbocg.github.io/sdim/reference/pca_est.md) | Principal Component Analysis (PCA) | He et al. (2023, MS) |
+| [`pls_est()`](https://gabbocg.github.io/sdim/reference/pls_est.md) | Partial Least Squares (PLS) | He et al. (2023, MS) |
+| [`rra_est()`](https://gabbocg.github.io/sdim/reference/rra_est.md) | Reduced-Rank Approach (RRA) | He et al. (2023, MS) |
+| [`spca_est()`](https://gabbocg.github.io/sdim/reference/spca_est.md) | Scaled PCA (sPCA) | Huang et al. (2022, MS) |
+| [`ipca_est()`](https://gabbocg.github.io/sdim/reference/ipca_est.md) | Instrumented PCA (IPCA) | Kelly, Pruitt & Su (2019, JFE) |
 
 All estimators return S3 objects with
 [`print()`](https://rdrr.io/r/base/print.html),
@@ -21,6 +21,7 @@ All estimators return S3 objects with
 ## Quick start
 
 ``` r
+
 library(sdim)
 
 set.seed(42)
@@ -34,6 +35,7 @@ These methods take a multivariate target (T × N returns) and a matrix of
 factor proxies (T × L):
 
 ``` r
+
 fit_pca <- pca_est(target = ret, X = X, nfac = 3)
 fit_pls <- pls_est(target = ret, X = X, nfac = 3)
 fit_rra <- rra_est(target = ret, X = X, nfac = 3)
@@ -55,6 +57,7 @@ this supports the predictive alignment needed in out-of-sample
 forecasting.
 
 ``` r
+
 y <- rnorm(200)
 
 fit_spca <- spca_est(target = y, X = X, nfac = 3)
@@ -71,6 +74,7 @@ IPCA extracts latent factors from panel data using time-varying
 characteristics as instruments:
 
 ``` r
+
 TT <- 120 
 K <- 50
 n_chars <- 6
@@ -94,6 +98,7 @@ Use [`predict()`](https://rdrr.io/r/stats/predict.html) to project new
 data onto the estimated factor loadings:
 
 ``` r
+
 X_new <- matrix(rnorm(5 * 20), 5, 20)
 
 # PCA projection
@@ -113,6 +118,7 @@ Evaluate extracted factors using the metrics from He et al. (2023,
 §2.4):
 
 ``` r
+
 eval_factors(ret = ret, factors = fit_rra$factors)
 #> Factor Evaluation
 #> ---------------------------------------- 
