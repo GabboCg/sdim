@@ -1,4 +1,4 @@
-# sdim: An R Package for Supervised Dimension Reduction
+# sdim
 
 **Author:** [Gabriel Cabrera](https://github.com/GabboCg)  
 **License:** [MIT](https://opensource.org/licenses/MIT) + file
@@ -6,14 +6,15 @@
 
 ## Overview
 
-**sdim** implements five factor extraction methods for asset pricing and
-macroeconomic forecasting. PCA, PLS, and RRA take a multivariate target
-(T×N returns matrix) and a matrix of factor proxies. sPCA takes a
-univariate target and scales each proxy by its OLS slope on the target
-before extracting principal components. IPCA extracts latent factors
-from panel data using time-varying characteristics as instruments,
-estimated via alternating least squares (ALS). Performance of extracted
-factors can be evaluated with
+**sdim** is an R package for supervised dimension reduction for asset
+pricing and macro forecasting. It implements five factor extraction
+methods. PCA, PLS, and RRA take a multivariate target (T×N returns
+matrix) and a matrix of factor proxies. sPCA takes a univariate target
+and scales each proxy by its OLS slope on the target before extracting
+principal components. IPCA extracts latent factors from panel data using
+time-varying characteristics as instruments, estimated via alternating
+least squares (ALS). Performance of extracted factors can be evaluated
+with
 [`eval_factors()`](https://gabbocg.github.io/sdim/reference/eval_factors.md).
 The package ships with seven `he2023_*` datasets (factor proxies and
 portfolio returns) from the He et al. (2023, MS) replication package.

@@ -204,8 +204,8 @@ summary(fit2)
 #> Eigenvalues
 #> ---------------------------------------- 
 #>                     F1      F2
-#> Eigenvalue      0.0197  0.0073
-#> Var. expl. (%) 72.9800 27.0200
+#> Eigenvalue      0.0073  0.0197
+#> Var. expl. (%) 27.0200 72.9800
 ```
 
 ## References
