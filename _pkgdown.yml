@@ -2,10 +2,22 @@ url: https://gabbocg.github.io/sdim/
 
 template:
   bootstrap: 5
-  bslib:
-    primary: "#1a9e78"
+  bootswatch: default
   light-switch: true
   math-rendering: mathjax
+  bslib:
+    base_font: {google: "Source Sans Pro"}
+    heading_font: {google: "Source Sans Pro"}
+    font-size-base: 0.9375rem
+    bg: '#ffffff'
+    fg: '#1B2A3D'
+    primary: '#1a9e78'
+    link-color: '#1a9e78'
+    navbar-bg: '#1a9e78'
+    navbar-fg: '#ffffff'
+    navbar-brand-color: '#ffffff'
+    code-bg: '#f0faf6'
+    border-color: '#1a9e78'
 
 navbar:
   structure:
@@ -66,3 +78,8 @@ reference:
       - grunfeld
       - starts_with("he2023")
       - starts_with("huang2022")
+
+footer:
+  structure:
+    left: developed_by
+    right: built_with
