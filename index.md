@@ -1,4 +1,4 @@
-# sdim: Supervised Dimension Reduction for Asset Pricing and Macro Forecasting
+# sdim: An R Package for Supervised Dimension Reduction
 
 **Author:** [Gabriel Cabrera](https://github.com/GabboCg)  
 **License:** [MIT](https://opensource.org/licenses/MIT) + file
