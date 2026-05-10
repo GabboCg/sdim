@@ -1,4 +1,7 @@
-# sdim  <a href="https://github.com/GabboCg/sdim"><img src="man/figures/logo.png" align="right" height="138" /></a>
+# sdim: Supervised Dimension Reduction for Asset Pricing and Macro Forecasting <img src="man/figures/logo.png" align="right" height="138" />
+
+**Author:** [Gabriel Cabrera](https://github.com/GabboCg)<br>
+**License:** [MIT](https://opensource.org/licenses/MIT) + file [LICENSE](LICENSE)
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/GabboCg/sdim/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/GabboCg/sdim/actions/workflows/R-CMD-check.yaml)
@@ -9,7 +12,19 @@
 
 ## Overview
 
-**sdim** implements five factor extraction methods for asset pricing and macroeconomic forecasting:
+**sdim** implements five factor extraction methods for asset pricing and macroeconomic forecasting. PCA, PLS, and RRA take a multivariate target (T×N returns matrix) and a matrix of factor proxies. sPCA takes a univariate target and scales each proxy by its OLS slope on the target before extracting principal components. IPCA extracts latent factors from panel data using time-varying characteristics as instruments, estimated via alternating least squares (ALS). Performance of extracted factors can be evaluated with `eval_factors()`. The package ships with seven `he2023_*` datasets (factor proxies and portfolio returns) from the He et al. (2023, MS) replication package.
+
+## Installation
+
+```r
+# Install from GitHub (not yet on CRAN)
+# install.packages("pak")
+pak::pak("GabboCg/sdim")
+```
+
+## Methods
+
+### Factor Extraction
 
 | Function | Method | Reference |
 |---|---|---|
@@ -19,23 +34,11 @@
 | `spca_est()` | Scaled PCA (sPCA) | Huang et al. (2022, MS) |
 | `ipca_est()` | Instrumented PCA (IPCA) | Kelly, Pruitt & Su (2019, JFE) |
 
-PCA, PLS, and RRA take a multivariate target (T×N returns matrix) and a matrix of factor proxies. sPCA takes a univariate target and scales each proxy by its OLS slope on the target before extracting principal components. IPCA extracts latent factors from panel data using time-varying characteristics as instruments, estimated via alternating least squares (ALS). Performance of extracted factors can be evaluated with `eval_factors()`.
-
-The package ships with seven `he2023_*` datasets (factor proxies and portfolio returns) from the He et al. (2023, MS) replication package.
-
-## Installation
-
-``` r
-# Install from GitHub (not yet on CRAN)
-# install.packages("pak")
-pak::pak("GabboCg/sdim")
-```
-
 ## Usage
 
 ### Quick start
 
-``` r
+```r
 library(sdim)
 
 set.seed(42)
@@ -70,7 +73,7 @@ eval_factors(ret = ret, factors = fit_rra$factors)
 
 ### IPCA (panel with time-varying characteristics)
 
-``` r
+```r
 # Simulate panel
 set.seed(99)
 TT <- 120
@@ -116,7 +119,7 @@ fit_var$var_coef   # K x K VAR(1) coefficient matrix
 
 ### sPCA (univariate target)
 
-``` r
+```r
 y <- rnorm(200) # univariate return series
 
 fit_spca <- spca_est(target = y, X = X, nfac = 3)
@@ -149,8 +152,6 @@ If you encounter a bug, please file an issue with a minimal reproducible example
 
 ## References
 
-- He, J., Huang, J., Li, F., and Zhou, G. (2023). "Shrinking Factor Dimension: A Reduced-Rank Approach." *Management Science*, 69(9). [doi:10.1287/mnsc.2022.4563](https://doi.org/10.1287/mnsc.2022.4563)
-
-- Huang, J., Jiang, J., Li, F., Tong, G., and Zhou, G. (2022). "Scaled PCA: A New Approach to Dimension Reduction." *Management Science*, 68(3). [doi:10.1287/mnsc.2021.4020](https://doi.org/10.1287/mnsc.2021.4020)
-
-- Kelly, B. T., Pruitt, S., and Su, Y. (2019). "Characteristics are Covariances: A Unified Model of Risk and Return." *Journal of Financial Economics*, 134(3). [doi:10.1016/j.jfineco.2019.05.001](https://doi.org/10.1016/j.jfineco.2019.05.001)
+- He, J., Huang, J., Li, F., and Zhou, G. (2023). Shrinking Factor Dimension: A Reduced-Rank Approach. *Management Science*, 69(9). [doi:10.1287/mnsc.2022.4563](https://doi.org/10.1287/mnsc.2022.4563)
+- Huang, J., Jiang, J., Li, F., Tong, G., and Zhou, G. (2022). Scaled PCA: A New Approach to Dimension Reduction. *Management Science*, 68(3). [doi:10.1287/mnsc.2021.4020](https://doi.org/10.1287/mnsc.2021.4020)
+- Kelly, B. T., Pruitt, S., and Su, Y. (2019). Characteristics are Covariances: A Unified Model of Risk and Return. *Journal of Financial Economics*, 134(3). [doi:10.1016/j.jfineco.2019.05.001](https://doi.org/10.1016/j.jfineco.2019.05.001)
